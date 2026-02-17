@@ -1,7 +1,7 @@
 import React from 'react'
 import "./Navbar.css"
-import { Link } from 'react-router-dom'
 import icon from '../../assets/images/icon2.png'
+import { Link } from 'react-router-dom'
 function Navbar() {
   return (
     <div className='navbar'>
@@ -17,7 +17,7 @@ function Navbar() {
           <li><a>Home</a></li>
           <li><a>Lessons</a></li>
           <li><a>Investments</a></li>
-          <li><a>Sign Up</a></li>
+          <li><Link to="/sign-up">Sign Up</Link></li>
         </ul>
       </div>
        

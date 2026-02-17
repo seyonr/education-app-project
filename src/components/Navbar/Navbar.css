@@ -30,21 +30,20 @@ img{
 
 .nav-list ul li{
     list-style-type: none;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     color: #000000;
-    transition: all ease 0.3s ;
+    transition: 0.3s  ease-in-out;
+    cursor: pointer;
 
 }
 
 .nav-list ul li:hover{
-    color:  #087717;
-    font-size: 24px;
+    color:  white;
     font-weight: bolder;
 
-    /* transform: translateY(-2px); */
 }
-
+/* 
 .sign-up{
     border: 1px solid teal;
     background-color: white;
@@ -65,4 +64,4 @@ img{
 
 
 
-}
+} */
