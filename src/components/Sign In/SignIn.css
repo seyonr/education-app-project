@@ -79,4 +79,21 @@ input{
     text-decoration: underline;
 }
 
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #0066cc;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+.auth-success {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+
 

@@ -8,7 +8,6 @@ import HomePage from './components/HomePage/HomePage';
 import PetShop from './components/PetShop/PetShop';
 
 
-
 function App() {
   return (
     <Router>
