@@ -11,6 +11,24 @@ function SignIn() {
   const [error, setError] = useState("")
   const navigate = useNavigate();
 
+  const getAuthErrorMessage = (err) => {
+    switch (err.code) {
+      case "auth/invalid-credential":
+      case "auth/invalid-login-credentials":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+        return "Email or password is incorrect.";
+      case "auth/invalid-email":
+        return "Please enter a valid email address.";
+      case "auth/user-disabled":
+        return "This account has been disabled.";
+      case "auth/too-many-requests":
+        return "Too many attempts. Try again later.";
+      default:
+        return err.message || "Sign-in failed. Please try again.";
+    }
+  };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
@@ -19,7 +37,7 @@ function SignIn() {
       await signInWithEmailAndPassword(auth, email, password)
       navigate("/");
     } catch(err) {
-      setError(err.message)
+      setError(getAuthErrorMessage(err))
     }
 
   }
@@ -39,6 +57,8 @@ function SignIn() {
             {/* <label htmlFor="password">Password</label> */}
             <input type="password" name="password" id="password" placeholder='Enter Password' 
             value={password} onChange={(e) => setPassword(e.target.value)}required/> 
+
+            {error && <p className="auth-error">{error}</p>}
           
             <button className='signIn-btn'>Sign In</button>
 

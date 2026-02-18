@@ -41,6 +41,16 @@ form{
     font-family: "Gugi", sans-serif;
     font-weight: 400;
 }
+
+.auth-error {
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
 .google-icon{
     margin-top: 40px;
     cursor: pointer;
