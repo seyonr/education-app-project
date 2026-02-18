@@ -1,0 +1,30 @@
+.units-page {
+  min-height: 100vh;
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: #f7f7f7;
+}
+
+.units-page h1 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.units-page button {
+  width: 280px;
+  padding: 14px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.units-page button:hover {
+  background-color: #eef2ff;
+}
+

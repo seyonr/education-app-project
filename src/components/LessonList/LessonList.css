@@ -1,0 +1,30 @@
+.lesson-list-page {
+  min-height: 100vh;
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background-color: #f7f7f7;
+}
+
+.lesson-list-page h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.lesson-card {
+  width: 300px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+}
+
+.lesson-card:hover {
+  background-color: #eef2ff;
+}

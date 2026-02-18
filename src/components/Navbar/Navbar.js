@@ -36,7 +36,7 @@ function Navbar() {
           {user && (
             <>
               <li>
-                <Link to="/lessons" className="up">Lessons</Link>
+                <Link to="/grade" className="up">Lessons</Link>
               </li>
               <li>
                 <Link to="/pet-shop" className="up">Pet Shop</Link>
