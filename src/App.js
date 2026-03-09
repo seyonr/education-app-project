@@ -9,7 +9,8 @@ import PetShop from './components/PetShop/PetShop';
 import Grade from "./components/Grade/Grade";
 import Units from "./components/Units/Units";
 import LessonList from "./components/LessonList/LessonList";
-
+import Lessons from "./components/Lessons/Lesson"
+import LessonIntro from "./components/LessonIntro/LessonIntro"
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
       <Route path="/grade" element={<Grade />} />
       <Route path="/units/:grade" element={<Units />} />
       <Route path="/lessons/:grade/:unit" element={<LessonList />} />
+      <Route path="/lessonIntro/:grade/:unit/:lessonId" element={<LessonIntro/>} />
+
+      <Route path="/lesson/lessons/:grade/:unit/:lessonId" element={<Lessons/>} />
     </Routes>
 
     </Router>
