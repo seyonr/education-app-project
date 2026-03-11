@@ -102,7 +102,7 @@ function Lesson() {
                     <div className='option-btn' key={index} onClick={() => checkAns(option.text)}>
                         <div>
                             <p className='option-txt'>{option.text}</p>
-                            <p className='option-subtxt'>{option.subText}</p>
+                            {/* <p className='option-subtxt'>{option.subText}</p> */}
                         </div>
                         
                         <img src={option.img}  width={100} height={100} alt="" />

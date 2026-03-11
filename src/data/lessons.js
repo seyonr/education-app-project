@@ -20,7 +20,7 @@ const lessonsData = {
             example_img: [
               "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
               "https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
-              "https://cdn-icons-png.flaticon.com/512/3250/3250484.png"
+              "https://pngimg.com/d/piggy_bank_PNG56.png"
             ]
           }
         ],
@@ -116,33 +116,32 @@ const lessonsData = {
       {
         id: 2, title: "Needs vs Wants",
         context: [
-          {
-            term: "Needs",
-            definition: "Needs are things that you cannot live without.",
-            example_img: [
-
-              "https://cdn.vectorstock.com/i/1000v/65/51/delicious-food-cartoon-vector-23756551.jpg",
-              "https://img.freepik.com/premium-photo/cartoon-water-bottle-clipart-white-background_924727-126093.jpg",
-              "https://img.freepik.com/free-vector/charming-house-with-tree-illustration_1308-176337.jpg",
-              "https://www.clipartmax.com/png/middle/0-6367_cartoon-clothes-rack-pnf.png"
-
-            ]
-          },
-          {
-            term: "Wants",
-            definition: "Wants are things that are for fun, but are optional",
-            example_img: [
-              "https://img.freepik.com/free-vector/character-playing-videogame_23-2148540059.jpg",
-              "https://i.fbcd.co/products/resized/resized-750-500/2780626747503ed1d35cc41e5ca8794cab74f6331d2052147f9d58fa96c33e67.jpg",
-              "https://c8.alamy.com/comp/MJWDT5/sweets-candy-cakes-icons-set-cartoon-style-MJWDT5.jpg"
-            ]
-          },
-
-        ],
+  {
+    term: "Needs",
+    definition: "Things you must have.",
+    example_img: [
+      "https://cdn.vectorstock.com/i/1000v/65/51/delicious-food-cartoon-vector-23756551.jpg", 
+      "https://img.freepik.com/premium-photo/cartoon-water-bottle-clipart-white-background_924727-126093.jpg", 
+      "https://img.freepik.com/free-vector/charming-house-with-tree-illustration_1308-176337.jpg", 
+      "https://www.clipartmax.com/png/middle/0-6367_cartoon-clothes-rack-pnf.png",
+      
+    ]
+  },
+  {
+    term: "Wants",
+    definition: "Nice to have.",
+    example_img: [
+      "https://img.freepik.com/free-vector/character-playing-videogame_23-2148540059.jpg", 
+      "https://i.fbcd.co/products/resized/resized-750-500/2780626747503ed1d35cc41e5ca8794cab74f6331d2052147f9d58fa96c33e67.jpg", 
+      "https://c8.alamy.com/comp/MJWDT5/sweets-candy-cakes-icons-set-cartoon-style-MJWDT5.jpg", 
+      "https://img.freepik.com/premium-vector/skateboard-floating-cartoon-vector-icon-sport-object-icon-concept-isolated-flat-vector-illustration_1041213-1507.jpg"
+    ]
+  }
+],
 
         tips: (
           <>
-            Take care of your <strong>needs</strong> first, then spend on things you <strong>want</strong>.
+             <strong>Needs</strong> first. <strong>Wants</strong> later..
           </>
         ),
 

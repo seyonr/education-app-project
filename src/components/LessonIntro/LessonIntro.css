@@ -21,7 +21,7 @@
     flex-direction: column;
     gap: 25px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 .context-card{
@@ -37,15 +37,18 @@
 }
 
 .context-images{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
     align-items: center;
-    justify-content: space-between;
+    justify-self: center;
 }
 
+
+
 .context-img{
-    width: 200px;
-    height: 160px;
-    
+    width: 250px;
+    height: 200px;
    
     border-radius: 15px;
 }
