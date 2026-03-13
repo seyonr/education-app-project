@@ -4,23 +4,40 @@ import lessonsData from "../../data/lessons";
 import "./Units.css";
 
 function Units() {
+
   const { grade } = useParams();
   const navigate = useNavigate();
 
-  const units = lessonsData[grade];
+  // convert "4" → "grade4"
+  const gradeKey = `grade${grade}`;
+
+  const units = lessonsData[gradeKey];
+
+  if (!units) {
+    return (
+      <div style={{padding:"40px"}}>
+        <h2>Grade not found</h2>
+        <button onClick={() => navigate("/")}>
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
     <section className="units-page">
-      <h1>Where should we start?</h1>
+
+      <h1>Choose a Unit</h1>
 
       {Object.keys(units).map((unitKey, index) => (
         <button
           key={index}
-          onClick={() => navigate(`/lessons/${grade}/${unitKey}`)}
+          onClick={() => navigate(`/lessons/${gradeKey}/${unitKey}`)}
         >
           {unitKey.toUpperCase()}
         </button>
       ))}
+
     </section>
   );
 }

@@ -1,35 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import { BrowserRouter as Router,  Route, Routes} from 'react-router-dom';
-import SignUp from './components/Sign Up/SignUp';
-import SignIn from './components/Sign In/SignIn';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 import HomePage from './components/HomePage/HomePage';
 import PetShop from './components/PetShop/PetShop';
-import Grade from "./components/Grade/Grade";
+import GradeSelect from "./components/GradeSelect/GradeSelect";
 import Units from "./components/Units/Units";
 import LessonList from "./components/LessonList/LessonList";
-import Lessons from "./components/Lessons/Lesson"
-import LessonIntro from "./components/LessonIntro/LessonIntro"
+import Lessons from "./components/Lessons/Lesson";
+import LessonIntro from "./components/LessonIntro/LessonIntro";
+
+import { getGradeCookie } from "./cookieUtils";
 
 function App() {
+
+  const grade = getGradeCookie();
+
   return (
     <Router>
-      
-    <Navbar/>
-    <Routes>
-      <Route path='/' exact element={<HomePage/>}/>
-      {/* Route */}
-      <Route path='/sign-up' element={<SignUp/>}/>
-      <Route path='/sign-in' element={<SignIn/>}/>
-      <Route path='/pet-shop' element={<PetShop/>}/>
-      <Route path="/grade" element={<Grade />} />
-      <Route path="/units/:grade" element={<Units />} />
-      <Route path="/lessons/:grade/:unit" element={<LessonList />} />
-      <Route path="/lessonIntro/:grade/:unit/:lessonId" element={<LessonIntro/>} />
 
-      <Route path="/lesson/lessons/:grade/:unit/:lessonId" element={<Lessons/>} />
-    </Routes>
+      <Navbar/>
+
+      <Routes>
+
+        {/* Main entry */}
+        <Route
+          path="/"
+          element={grade ? <Navigate to="/dashboard"/> : <GradeSelect/>}
+        />
+
+        {/* Safety redirect for old route */}
+        <Route path="/grade" element={<Navigate to="/" />} />
+
+        {/* Dashboard */}
+        <Route path="/dashboard" element={<HomePage/>} />
+
+        {/* Lessons */}
+        <Route path="/units/:grade" element={<Units />} />
+        <Route path="/lessons/:grade/:unit" element={<LessonList />} />
+        <Route path="/lessonIntro/:grade/:unit/:lessonId" element={<LessonIntro/>} />
+        <Route path="/lesson/lessons/:grade/:unit/:lessonId" element={<Lessons/>} />
+
+        {/* Other */}
+        <Route path="/pet-shop" element={<PetShop/>}/>
+
+      </Routes>
 
     </Router>
   );
