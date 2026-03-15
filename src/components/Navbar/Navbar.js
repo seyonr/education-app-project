@@ -1,28 +1,71 @@
+// import React from "react";
+// import "./Navbar.css";
+// import icon from "../../assets/images/icon2.png";
+// import { Link } from "react-router-dom";
+
+// function Navbar() {
+
+//   return (
+//     <div className="navbar">
+
+//       <div className="logo">
+//         <Link to="/dashboard">
+//           <img src={icon} alt="PennyPals Logo"/>
+//         </Link>
+//       </div>
+
+//       <div className="nav-list">
+//         <ul>
+
+//           <li>
+//             <Link to="/dashboard" className="up">Home</Link>
+//           </li>
+
+//           <li>
+//             <Link to="/grade" className="up">Lessons</Link>
+//           </li>
+
+//           <li>
+//             <Link to="/pet-shop" className="up">Pet Shop</Link>
+//           </li>
+
+//           <li className="coins">🪙 120</li>
+
+//         </ul>
+//       </div>
+
+//     </div>
+//   );
+// }
+
+// export default Navbar;
+
+
 import React from "react";
 import "./Navbar.css";
 import icon from "../../assets/images/icon2.png";
 import { Link } from "react-router-dom";
+import { getGradeCookie } from "../../cookieUtils";
 
 function Navbar() {
+  const grade = getGradeCookie();
 
   return (
     <div className="navbar">
-
       <div className="logo">
         <Link to="/dashboard">
-          <img src={icon} alt="PennyPals Logo"/>
+          <img src={icon} alt="PennyPals Logo" />
         </Link>
       </div>
 
       <div className="nav-list">
         <ul>
-
           <li>
             <Link to="/dashboard" className="up">Home</Link>
           </li>
 
           <li>
-            <Link to="/grade" className="up">Lessons</Link>
+            <Link to={grade ? `/units/${grade}` : "/"} className="up">Lessons</Link>
           </li>
 
           <li>
@@ -30,10 +73,8 @@ function Navbar() {
           </li>
 
           <li className="coins">🪙 120</li>
-
         </ul>
       </div>
-
     </div>
   );
 }
