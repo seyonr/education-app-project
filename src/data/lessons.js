@@ -4062,6 +4062,351 @@ const lessonsData = {
           }
         ]
       }
+    ],
+    unit4: [
+      {
+        id: 13,
+        title: "Ways to Earn Money",
+        coinReward: 20,
+        context: [
+          {
+            term: "Earn",
+            definition:
+              "Earning money means doing helpful work or completing a useful task."
+          }
+        ],
+        tips: "Money is often earned by helping, working, or doing a job well.",
+        questions: [
+          {
+            type: "scenario-choice",
+            scenarioTitle: "Helping at Home",
+            scenarioText: "You want money for a goal.",
+            walletAmount: 0,
+            goal: "Find a good way to earn",
+            heroEmoji: "🧹",
+            heroCaption: "Helpful work can become earning.",
+            question: "What is a good way to earn money?",
+            generalHint: "Think about useful jobs you can do safely.",
+            options: [
+              {
+                text: "Do chores",
+                subText: "Helpful job",
+                emoji: "🧹",
+                effect: "Correct! Helping with chores can be a good way to earn money.",
+                isBest: true
+              },
+              {
+                text: "Wait and hope money appears",
+                subText: "No plan",
+                emoji: "💭",
+                hint: "Money usually comes from a plan or effort.",
+                effect: "Waiting without a plan is not a strong way to earn.",
+                isBest: false
+              },
+              {
+                text: "Spend before you earn",
+                subText: "Wrong order",
+                emoji: "💸",
+                hint: "Spending comes after you have money, not before.",
+                effect: "A smart plan starts with earning first.",
+                isBest: false
+              }
+            ]
+          },
+          {
+            type: "tap-reveal",
+            scenarioTitle: "Neighbor Helper",
+            scenarioText: "A neighbor needs help watering plants.",
+            heroEmoji: "🌱",
+            heroCaption: "Use the clues to find the best earning habit.",
+            question: "What makes this a smart earning choice?",
+            generalHint: "Think about being helpful and responsible.",
+            cards: [
+              {
+                id: "u4l13c1",
+                coverEmoji: "🃏",
+                emoji: "🤝",
+                title: "Clue 1",
+                text: "Helpful work can be a fair way to earn money."
+              },
+              {
+                id: "u4l13c2",
+                coverEmoji: "🃏",
+                emoji: "✅",
+                title: "Clue 2",
+                text: "Doing the job well matters."
+              },
+              {
+                id: "u4l13c3",
+                coverEmoji: "🃏",
+                emoji: "🕒",
+                title: "Clue 3",
+                text: "Being on time and reliable is important."
+              },
+              {
+                id: "u4l13c4",
+                coverEmoji: "🃏",
+                emoji: "💰",
+                title: "Clue 4",
+                text: "Money is usually earned after effort."
+              }
+            ],
+            options: [
+              {
+                text: "Help and do the job well",
+                isBest: true,
+                effect: "Great! Helpful work done responsibly is a strong earning habit."
+              },
+              {
+                text: "Ask for money without helping",
+                isBest: false,
+                hint: "Check the clues again. What comes before earning?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 14,
+        title: "Spend, Save, Share",
+        coinReward: 20,
+        context: [
+          {
+            term: "Share",
+            definition:
+              "Sharing means using some of your money to help others."
+          }
+        ],
+        tips: "A good money plan can include spending, saving, and sharing.",
+        questions: [
+          {
+            type: "scenario-choice",
+            scenarioTitle: "Three Good Uses",
+            scenarioText: "You earned $12 this week.",
+            walletAmount: 12,
+            goal: "Use money wisely",
+            heroEmoji: "🪙",
+            heroCaption: "Balanced plans are strong plans.",
+            question: "What is a balanced plan?",
+            generalHint: "A smart plan can do more than one good thing.",
+            options: [
+              {
+                text: "Spend some, save some, share some",
+                subText: "Balanced plan",
+                emoji: "⚖️",
+                effect: "Excellent! That is a balanced and thoughtful money plan.",
+                isBest: true
+              },
+              {
+                text: "Spend every dollar",
+                subText: "All now",
+                emoji: "💸",
+                hint: "Using all your money right away leaves nothing for later or for helping.",
+                effect: "Spending all of it removes balance from your plan.",
+                isBest: false
+              },
+              {
+                text: "Hide every dollar forever",
+                subText: "Only save",
+                emoji: "🫙",
+                hint: "Saving matters, but money can also be used wisely and kindly.",
+                effect: "A stronger plan is usually more balanced than this.",
+                isBest: false
+              }
+            ]
+          },
+          {
+            type: "budget-builder",
+            scenarioTitle: "Weekend Money Plan",
+            scenarioText: "You have $10 for the weekend.",
+            budget: 10,
+            heroEmoji: "📅",
+            heroCaption: "Can you make a balanced money plan?",
+            question: "Pick the best set of choices.",
+            generalHint: "Choose something for spending, something for saving, and something kind.",
+            successMessage: "Nice work! You made a balanced spend-save-share plan.",
+            items: [
+              { id: "u4l14i1", name: "Small Treat", price: 2, emoji: "🍪", tag: "spend" },
+              { id: "u4l14i2", name: "Save the Rest", price: 0, emoji: "🐷", tag: "save" },
+              { id: "u4l14i3", name: "Charity Box", price: 2, emoji: "❤️", tag: "share" },
+              { id: "u4l14i4", name: "Big Candy Bag", price: 6, emoji: "🍬", tag: "extra spend" },
+              { id: "u4l14i5", name: "Toy Car", price: 8, emoji: "🧸", tag: "big spend" }
+            ],
+            correctItemIds: ["u4l14i1", "u4l14i2", "u4l14i3"]
+          }
+        ]
+      },
+      {
+        id: 15,
+        title: "Big Goals Take Time",
+        coinReward: 20,
+        context: [
+          {
+            term: "Long-Term Goal",
+            definition:
+              "A long-term goal is something that takes more time and patience to reach."
+          }
+        ],
+        tips: "Big goals often need patience, planning, and regular saving.",
+        questions: [
+          {
+            type: "scenario-choice",
+            scenarioTitle: "New Bike Plan",
+            scenarioText: "A bike is expensive, so you need a plan.",
+            walletAmount: 10,
+            goal: "Save for a bike",
+            heroEmoji: "🚲",
+            heroCaption: "Big goals are built step by step.",
+            question: "What is the strongest idea?",
+            generalHint: "A big goal is usually not reached in one day.",
+            options: [
+              {
+                text: "Save regularly over time",
+                subText: "Keep building",
+                emoji: "🐷",
+                effect: "Correct! Big goals usually need regular saving.",
+                isBest: true
+              },
+              {
+                text: "Give up because it costs a lot",
+                subText: "Too hard",
+                emoji: "😕",
+                hint: "Big goals can still be reached with a plan.",
+                effect: "A good plan can make a big goal feel possible.",
+                isBest: false
+              },
+              {
+                text: "Spend your money on treats each week",
+                subText: "Fun now",
+                emoji: "🍭",
+                hint: "Treats use the money that could build the bike fund.",
+                effect: "Those treats slow the bike goal down.",
+                isBest: false
+              }
+            ]
+          },
+          {
+            type: "tap-reveal",
+            scenarioTitle: "Stay Motivated",
+            scenarioText: "Your goal still feels far away.",
+            heroEmoji: "🎯",
+            heroCaption: "Progress matters even before the finish line.",
+            question: "What should you remember?",
+            generalHint: "Big goals are often built from many small wins.",
+            cards: [
+              {
+                id: "u4l15c1",
+                coverEmoji: "🃏",
+                emoji: "👣",
+                title: "Clue 1",
+                text: "Every small saving step matters."
+              },
+              {
+                id: "u4l15c2",
+                coverEmoji: "🃏",
+                emoji: "📅",
+                title: "Clue 2",
+                text: "Saving often works better than waiting for one huge amount."
+              },
+              {
+                id: "u4l15c3",
+                coverEmoji: "🃏",
+                emoji: "📈",
+                title: "Clue 3",
+                text: "Progress can be slow and still be real progress."
+              },
+              {
+                id: "u4l15c4",
+                coverEmoji: "🃏",
+                emoji: "🙌",
+                title: "Clue 4",
+                text: "Staying patient helps long-term goals."
+              }
+            ],
+            options: [
+              {
+                text: "Every small step counts",
+                isBest: true,
+                effect: "Correct! Small steps really do matter."
+              },
+              {
+                text: "Only big amounts count",
+                isBest: false,
+                hint: "Look at the clues again. Can small steps still build a big goal?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 16,
+        title: "Money Mission Final Challenge",
+        coinReward: 25,
+        context: [
+          {
+            term: "Money Mission",
+            definition:
+              "A money mission is using everything you learned to make strong choices."
+          }
+        ],
+        tips: "Use all your money skills together: think, compare, save, and choose wisely.",
+        questions: [
+          {
+            type: "scenario-choice",
+            scenarioTitle: "Mission 1",
+            scenarioText: "You have $20. You need a notebook and want candy.",
+            walletAmount: 20,
+            goal: "Choose wisely",
+            heroEmoji: "📓",
+            heroCaption: "Needs first.",
+            question: "What is the smartest plan?",
+            generalHint: "Think about what matters most today.",
+            options: [
+              {
+                text: "Buy the notebook first and save the rest",
+                subText: "Need first",
+                emoji: "✅",
+                effect: "Excellent! You handled your need first and still saved money.",
+                isBest: true
+              },
+              {
+                text: "Buy lots of candy first",
+                subText: "Treat first",
+                emoji: "🍬",
+                hint: "Candy is a want. What comes first?",
+                effect: "Candy is a want, but the notebook is more important.",
+                isBest: false
+              },
+              {
+                text: "Spend all $20 on treats",
+                subText: "Use it all",
+                emoji: "💸",
+                hint: "That leaves nothing for the notebook or savings.",
+                effect: "That plan uses your money too quickly.",
+                isBest: false
+              }
+            ]
+          },
+          {
+            type: "budget-builder",
+            scenarioTitle: "Mission 2 Basket",
+            scenarioText: "You have $10 to prepare for a study night.",
+            budget: 10,
+            heroEmoji: "🧠",
+            heroCaption: "Can you build a smart study basket?",
+            question: "Pick the best set of items.",
+            generalHint: "Choose useful items before extra treats.",
+            successMessage: "Great job! You built a smart study plan.",
+            items: [
+              { id: "u4l16i1", name: "Notebook", price: 4, emoji: "📓", tag: "need" },
+              { id: "u4l16i2", name: "Pencil", price: 2, emoji: "✏️", tag: "need" },
+              { id: "u4l16i3", name: "Water", price: 2, emoji: "💧", tag: "helpful" },
+              { id: "u4l16i4", name: "Candy Box", price: 6, emoji: "🍬", tag: "extra" }
+            ],
+            correctItemIds: ["u4l16i1", "u4l16i2", "u4l16i3"]
+          }
+        ]
+      }
     ]
   }
 };
