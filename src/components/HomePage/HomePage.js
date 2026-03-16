@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import lessonsData from "../../data/lessons";
+
 import { getGradeCookie, clearGradeCookie } from "../../cookieUtils";
 import "./HomePage.css";
 
@@ -24,6 +26,20 @@ function HomePage() {
   const changeGrade = () => {
     clearGradeCookie();
     navigate("/");
+  };
+
+  const handleInvestmentGameClick = () => {
+    if (!grade) return;
+
+    const gradeKey = `grade${grade}`;
+    const gameLessons = lessonsData[gradeKey]?.game || [];
+
+    if (gameLessons.length === 0) {
+      return;
+    }
+
+    const selectedGame = gameLessons[0];
+    navigate(`/simulation/${gradeKey}/${selectedGame.id}`);
   };
 
   if (!grade) {
@@ -63,6 +79,7 @@ function HomePage() {
 
         <button
           className="home-btn"
+          onClick={handleInvestmentGameClick}
         >
           📈 Investment Game
         </button>

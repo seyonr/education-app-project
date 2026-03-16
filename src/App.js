@@ -9,6 +9,7 @@ import Units from "./components/Units/Units";
 import LessonList from "./components/LessonList/LessonList";
 import Lessons from "./components/Lessons/Lesson";
 import LessonIntro from "./components/LessonIntro/LessonIntro";
+import SimulatorGame from './components/SimulatorGame/SimulatorGame';
 
 import { getGradeCookie } from "./cookieUtils";
 
@@ -43,6 +44,9 @@ function App() {
 
         {/* Other */}
         <Route path="/pet-shop" element={<PetShop/>}/>
+        
+        <Route path="/simulation/:grade/:gameId" element={<SimulatorGame />} />
+
 
       </Routes>
 
