@@ -41,14 +41,21 @@
 // export default Navbar;
 
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import icon from "../../assets/images/icon2.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getGradeCookie } from "../../cookieUtils";
+import { useCoins } from "../../coinUtils";
 
 function Navbar() {
-  const grade = getGradeCookie();
+  const location = useLocation();
+  const [grade, setGrade] = useState(getGradeCookie());
+  const [coins] = useCoins();
+
+  useEffect(() => {
+    setGrade(getGradeCookie());
+  }, [location.pathname]);
 
   return (
     <div className="navbar">
@@ -69,10 +76,14 @@ function Navbar() {
           </li>
 
           <li>
+            <Link to={grade ? `/assessments/${grade}` : "/"} className="up">Assessments</Link>
+          </li>
+
+          <li>
             <Link to="/pet-shop" className="up">Pet Shop</Link>
           </li>
 
-          <li className="coins">🪙 120</li>
+          <li className="coins">🪙 {coins}</li>
         </ul>
       </div>
     </div>

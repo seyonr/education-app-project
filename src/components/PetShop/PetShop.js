@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import "./PetShop.css";
+import { useCoins } from "../../coinUtils";
 
 const CATEGORIES = [
   { id: "outfits", label: "Outfits", icon: "👕" },
@@ -22,7 +23,7 @@ const ITEMS = [
 
 export default function PetShop() {
   const [cat, setCat] = useState("outfits");
-  const [coins, setCoins] = useState(120);
+  const [coins, setCoins] = useCoins();
   const [selected, setSelected] = useState(null);
 
   const visibleItems = useMemo(

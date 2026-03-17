@@ -10,6 +10,9 @@ import LessonList from "./components/LessonList/LessonList";
 import Lessons from "./components/Lessons/Lesson";
 import LessonIntro from "./components/LessonIntro/LessonIntro";
 import SimulatorGame from './components/SimulatorGame/SimulatorGame';
+import AssessmentsPage from "./components/Assessments/AssessmentsPage";
+import AssessmentQuiz from "./components/Assessments/AssessmentQuiz";
+import AssessmentResults from "./components/Assessments/AssessmentResults";
 
 import { getGradeCookie } from "./cookieUtils";
 
@@ -41,6 +44,11 @@ function App() {
         <Route path="/lessons/:grade/:unit" element={<LessonList />} />
         <Route path="/lessonIntro/:grade/:unit/:lessonId" element={<LessonIntro/>} />
         <Route path="/lesson/lessons/:grade/:unit/:lessonId" element={<Lessons/>} />
+
+        {/* Assessments */}
+        <Route path="/assessments/:grade" element={<AssessmentsPage />} />
+        <Route path="/assessment/:grade/:unit" element={<AssessmentQuiz />} />
+        <Route path="/assessment/:grade/:unit/results" element={<AssessmentResults />} />
 
         {/* Other */}
         <Route path="/pet-shop" element={<PetShop/>}/>

@@ -1455,6 +1455,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import lessonsData from "../../data/lessons";
+import { addCoins } from "../../coinUtils";
 import "./Lesson.css";
 
 function Lesson() {
@@ -1562,13 +1563,12 @@ function Lesson() {
   };
 
   const awardCoins = () => {
-    const currentCoins = Number(localStorage.getItem("pennypalsCoins") || 120);
     const reward = lesson.coinReward || 15;
     const rewardKey = `coins_awarded_${grade}_${unit}_${lessonId}`;
 
     if (!localStorage.getItem(rewardKey)) {
-      localStorage.setItem("pennypalsCoins", String(currentCoins + reward));
       localStorage.setItem(rewardKey, "true");
+      addCoins(reward);
     }
   };
 

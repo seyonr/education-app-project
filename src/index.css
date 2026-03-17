@@ -1,8 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  --title-font: "Fredoka", "Nunito", sans-serif;
+  --body-font: "Nunito", "Fredoka", sans-serif;
+  --ink-900: #0f172a;
+  --ink-700: #334155;
+  --ink-600: #475569;
+  --panel-strong: #ffffff;
+  --panel-soft: #f8fafc;
+  --accent-strong: #f6a444;
+  --accent-warm: #ffd166;
+  --accent-cool: #9dd6ff;
+  --shadow-soft: 0 18px 32px rgba(15, 23, 42, 0.08);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--body-font);
+  color: var(--ink-900);
+  background:
+    radial-gradient(circle at top left, rgba(255, 226, 162, 0.45), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(157, 214, 255, 0.5), transparent 50%),
+    linear-gradient(120deg, #fffaf0, #f7fbff 60%, #fef6e6);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
