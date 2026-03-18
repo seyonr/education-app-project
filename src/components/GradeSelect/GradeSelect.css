@@ -163,3 +163,45 @@
     opacity: 1;
   }
 }
+
+
+/* 📱 TABLET */
+@media (max-width: 900px) {
+  .grade-card {
+    padding: 40px 20px;
+  }
+
+  .grade-card h1 {
+    font-size: 40px;
+  }
+
+  .grade-question {
+    font-size: 24px;
+  }
+
+  .grade-buttons button {
+    width: 260px;
+    font-size: 20px;
+  }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 500px) {
+  .grade-card {
+    padding: 30px 15px;
+  }
+
+  .grade-card h1 {
+    font-size: 32px;
+  }
+
+  .grade-question {
+    font-size: 20px;
+  }
+
+  .grade-buttons button {
+    width: 220px;
+    font-size: 18px;
+    padding: 18px;
+  }
+}

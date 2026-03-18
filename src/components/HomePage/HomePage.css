@@ -229,3 +229,52 @@
   background: #d1d5db;
   transform: scale(1.08);
 }
+
+/* 📱 TABLET */
+@media (max-width: 900px) {
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-btn {
+    height: 160px;
+    font-size: 22px;
+  }
+
+  .action-btn span {
+    font-size: 50px;
+  }
+
+  .top-bar h2 {
+    font-size: 32px;
+  }
+
+  .top-bar p {
+    font-size: 18px;
+  }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 500px) {
+  .home-shell {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .action-btn {
+    height: 130px;
+    font-size: 18px;
+  }
+
+  .action-btn span {
+    font-size: 40px;
+  }
+
+  .coins-display {
+    font-size: 20px;
+  }
+
+  .pet-placeholder {
+    font-size: 70px;
+  }
+}
