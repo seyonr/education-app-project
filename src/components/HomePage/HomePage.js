@@ -15,10 +15,19 @@ function HomePage() {
     else setGrade(savedGrade);
   }, [navigate]);
 
+  const changeGrade = () => {
+    // 🔥 CLEAR COOKIE
+    document.cookie = "userGrade=; path=/; max-age=0";
+
+    // 🔥 REDIRECT BACK
+    navigate("/");
+  };
+
   if (!grade) return null;
 
   return (
     <div className="home-shell">
+
       {/* 🎉 Floating emojis */}
       <div className="floating-emoji e1">💰</div>
       <div className="floating-emoji e2">🎁</div>
@@ -43,9 +52,15 @@ function HomePage() {
 
       <div className="floating-emoji e15">💸</div>
 
+      {/* 🔥 TOP BAR */}
       <div className="top-bar">
         <h2>Hi there! 👋</h2>
         <p>Let’s earn some coins today! 💰</p>
+
+        {/* 🔥 NEW BUTTON */}
+        <button className="change-grade-btn" onClick={changeGrade}>
+          🔄 Change Grade
+        </button>
       </div>
 
       {/* 🐻 PET */}
