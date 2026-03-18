@@ -66,7 +66,7 @@ function HomePage() {
         </button>
 
         <button className="action-btn green" onClick={() => navigate(`/assessments/${grade}`)}>
-          <span>🎮</span> Play
+          <span>💯</span> Test
         </button>
 
         <button className="action-btn pink" onClick={() => navigate("/pet-shop")}>
@@ -74,7 +74,7 @@ function HomePage() {
         </button>
 
         <button className="action-btn yellow">
-          <span>⭐</span> Progress
+          <span>📈</span> Invest
         </button>
 
       </div>
