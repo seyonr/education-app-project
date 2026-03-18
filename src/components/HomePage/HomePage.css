@@ -204,3 +204,28 @@
 .e8 { animation-duration: 5.2s; }
 .e9 { animation-duration: 3.6s; }
 .e10 { animation-duration: 4.8s; }
+
+
+
+/* 🔥 CHANGE GRADE BUTTON */
+.change-grade-btn {
+  margin-top: 12px;
+
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #e5e7eb;
+  color: #333;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.change-grade-btn:hover {
+  background: #d1d5db;
+  transform: scale(1.08);
+}
