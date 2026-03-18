@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-body {
-  overflow: hidden;
-}
-
 .grade-select-page {
   min-height: calc(100vh - 110px); 
   display: flex;

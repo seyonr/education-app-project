@@ -1,11 +1,13 @@
 .home-shell {
-  height: calc(100vh - 110px);
+  min-height: calc(100vh - 110px);
+  overflow-y: auto;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* 🔥 KEY FIX */
+  justify-content: center;
   align-items: center;
-  gap: 20px;                 /* 🔥 controls spacing */
-  padding: 10px 20px;
+  gap: 20px;
+  padding: 20px;
 }
 
 .pet-area {
