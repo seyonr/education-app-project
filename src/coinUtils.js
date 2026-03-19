@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const COINS_KEY = "coins";
-const DEFAULT_COINS = 120;
+const DEFAULT_COINS = 0;
 
 export const readCoins = () => {
   const raw = localStorage.getItem(COINS_KEY);
