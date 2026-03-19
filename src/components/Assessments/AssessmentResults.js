@@ -11,8 +11,8 @@ function AssessmentResults() {
 
   const gradeKey = grade?.startsWith("grade") ? grade : `grade${grade}`;
   const assessment = assessmentsData[gradeKey]?.[unit];
-  const answers = location.state?.answers || [];
-  const questionOrder = location.state?.questionOrder || [];
+  const answers = useMemo(() => location.state?.answers || [], [location.state]);
+  const questionOrder = useMemo(() => location.state?.questionOrder || [], [location.state]);
 
   const results = useMemo(() => {
     if (!assessment) return [];
@@ -29,6 +29,35 @@ function AssessmentResults() {
       return { question, userIndex, isCorrect };
     });
   }, [assessment, answers, questionOrder]);
+
+  const getOptionLabel = (option) => {
+    if (typeof option === "string") return option;
+    if (option && typeof option === "object") return option.label ?? "";
+    return "";
+  };
+
+  const getResultSummary = (result) => {
+    if (result.question.type === "drag-sort") {
+      return result.userIndex === 1 ? "All placements correct" : "Some placements need fixing";
+    }
+    if (result.question.type === "matching") {
+      return result.userIndex === 1 ? "All matches correct" : "Some matches are incorrect";
+    }
+    if (result.userIndex === null || result.userIndex === undefined) {
+      return "No answer";
+    }
+    return getOptionLabel(result.question.options[result.userIndex]);
+  };
+
+  const getCorrectAnswer = (result) => {
+    if (result.question.type === "drag-sort") {
+      return "Needs and wants sorted correctly";
+    }
+    if (result.question.type === "matching") {
+      return "Matches are correct";
+    }
+    return getOptionLabel(result.question.options[result.question.answerIndex]);
+  };
 
   useEffect(() => {
     if (!assessment) return;
@@ -62,7 +91,7 @@ function AssessmentResults() {
         addCoins(reward);
       }
     }
-  }, [assessment, answers, gradeKey, unit, results]);
+  }, [assessment, answers, gradeKey, unit, results, questionOrder]);
 
   if (!assessment) {
     return (
@@ -85,7 +114,11 @@ function AssessmentResults() {
   const scoreText = score >= 4 ? "Great job!" : score >= 3 ? "Nice work!" : "Keep practicing!";
   const scoreEmoji = score >= 4 ? "🌟" : score >= 3 ? "👏" : "💪";
   const isPerfect = score === total && total > 0;
-    const reward = score === total ? 20 : score >= 3 ? 10 : 0;
+  const reward = score === total ? 20 : score >= 3 ? 10 : 0;
+  const rewardMessage = reward > 0 ? `You earned +${reward} coins!` : "Keep going to earn more coins!";
+  const petMessage = reward > 0
+    ? "Your pet loves smart choices!"
+    : "Your pet gets stronger with practice.";
   const historyKey = `assessment_${gradeKey}_${unit}`;
   const historyRaw = localStorage.getItem(historyKey);
   let history = [];
@@ -103,6 +136,19 @@ function AssessmentResults() {
 
   return (
     <div className={`assessment-container ${isPerfect ? "confetti-on" : ""}`}>
+      <div className="result-reward-banner">
+        <div>
+          <div className="result-reward-title">{rewardMessage}</div>
+          <div className="result-reward-sub">{petMessage}</div>
+        </div>
+        <button
+          className="assessment-action primary"
+          onClick={() => navigate("/pet-shop")}
+        >
+          Visit Pet Shop
+        </button>
+      </div>
+
       <div className="result-simple">
         <div className="result-emoji">{scoreEmoji}</div>
         <div className="result-title">Quiz Results</div>
@@ -140,10 +186,10 @@ function AssessmentResults() {
               Q{index + 1}. {result.question.question}
             </div>
             <div className="assessment-result-row">
-              Your answer: {result.userIndex !== null ? result.question.options[result.userIndex] : "No answer"}
+              Your answer: {getResultSummary(result)}
             </div>
             <div className="assessment-result-row">
-              Correct answer: {result.question.options[result.question.answerIndex]}
+              Correct answer: {getCorrectAnswer(result)}
             </div>
             <div className="assessment-result-feedback">{result.question.feedback}</div>
           </div>
