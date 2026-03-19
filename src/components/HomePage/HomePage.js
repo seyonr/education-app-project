@@ -98,7 +98,7 @@ import "./HomePage.css";
 
 function HomePage() {
   const navigate = useNavigate();
-  const [grade, setGrade] = useState(undefined); // undefined = still checking
+  const [grade, setGrade] = useState(undefined);
   const [coins] = useCoins();
 
   useEffect(() => {
@@ -107,7 +107,6 @@ function HomePage() {
   }, []);
 
   useEffect(() => {
-    // only redirect AFTER cookie check is done
     if (grade === null) {
       navigate("/", { replace: true });
     }
@@ -116,12 +115,8 @@ function HomePage() {
   const changeGrade = () => {
     document.cookie = "userGrade=; path=/; max-age=0";
     navigate("/", { replace: true, state: { reset: true } });
-
-    // only use this if you STILL see weird routing issues
-    // window.location.reload();
   };
 
-  // while checking cookie, render nothing
   if (grade === undefined) {
     return null;
   }
@@ -169,22 +164,38 @@ function HomePage() {
           className="action-btn blue"
           onClick={() => navigate(`/units/${grade}`)}
         >
-          <span>📚</span> Lessons
+          <span>📚</span>
+          <span>Lessons</span>
         </button>
 
         <button
           className="action-btn green"
           onClick={() => navigate(`/assessments/${grade}`)}
         >
-          <span>💯</span> Test
+          <span>💯</span>
+          <span>Test</span>
         </button>
 
-        <button className="action-btn pink" onClick={() => navigate("/pet-shop")}>
-          <span>🎁</span> Shop
+        <button
+          className="action-btn action-btn-disabled"
+          disabled
+          aria-disabled="true"
+          title="Work in progress"
+        >
+          <span>🎁</span>
+          <span>Pet Shop</span>
+          <span className="coming-soon-badge">Work in Progress</span>
         </button>
 
-        <button className="action-btn yellow" onClick={() => navigate("/investments")}>
-          <span>📈</span> Invest
+        <button
+          className="action-btn action-btn-disabled"
+          disabled
+          aria-disabled="true"
+          title="Work in progress"
+        >
+          <span>📈</span>
+          <span>Invest</span>
+          <span className="coming-soon-badge">Work in Progress</span>
         </button>
       </div>
     </div>

@@ -34,20 +34,6 @@
     align-items: center;
 }
 
-/* .up {
-    text-decoration: none;
-    color: #1f2937;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 12px;
-    transition: background 0.12s ease, transform 0.12s ease;
-}
-
-.up:hover {
-    background: rgba(240, 200, 120, 0.35);
-    transform: translateY(-1px);
-} */
-
 .up {
     text-decoration: none;
     color: #1f2937;
@@ -62,13 +48,18 @@
     transform: translateY(-2px);
 }
 
-/* .coins {
-    font-weight: bold;
-    background: #fff4c7;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 2px solid rgba(0,0,0,0.08);
-} */
+.nav-disabled {
+    color: #9ca3af;
+    background: #f3f4f6;
+    cursor: not-allowed;
+    user-select: none;
+    border: 1px dashed #cbd5e1;
+}
+
+.nav-disabled:hover {
+    background: #f3f4f6;
+    transform: none;
+}
 
 .coins {
     font-weight: bold;

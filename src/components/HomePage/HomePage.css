@@ -1,6 +1,8 @@
 .home-shell {
   min-height: calc(100vh - 110px);
   overflow-y: auto;
+  position: relative;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
@@ -17,8 +19,21 @@
   align-items: center;
 }
 
+.pet-area::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: #ffffff50;
+  border-radius: 50%;
+  filter: blur(20px);
+  z-index: 0;
+}
+
 .pet-placeholder {
-  font-size: 90px;   /* 🔥 smaller */
+  font-size: 90px;
+  position: relative;
+  z-index: 1;
   animation: floatPet 3s ease-in-out infinite;
 }
 
@@ -37,7 +52,7 @@
 
 .action-grid {
   width: 100%;
-  max-width: 700px;   /* 🔥 wider than before */
+  max-width: 700px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px;
@@ -45,7 +60,7 @@
 
 .action-btn {
   width: 100%;
-  height: 200px;   /* 🔥 controls rectangle height */
+  height: 200px;
 
   display: flex;
   flex-direction: column;
@@ -64,8 +79,7 @@
   transition: all 0.2s ease;
 }
 
-
-.action-btn span {
+.action-btn span:first-child {
   font-size: 70px;
 }
 
@@ -77,12 +91,40 @@
 
 /* HOVER */
 .action-btn:hover {
-  transform: scale(1.12) translateY(-5px);  /* 🔥 BIGGER + LIFT */
+  transform: scale(1.12) translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .action-btn:active {
   transform: scale(0.95);
+}
+
+.action-btn-disabled {
+  background: #d1d5db !important;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 1;
+  box-shadow: inset 0 0 0 2px #bfc5ce;
+  animation: none;
+}
+
+.action-btn-disabled:hover {
+  transform: none;
+  box-shadow: inset 0 0 0 2px #bfc5ce;
+}
+
+.action-btn-disabled:active {
+  transform: none;
+}
+
+.coming-soon-badge {
+  font-size: 14px !important;
+  font-weight: 700;
+  background: #9ca3af;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  line-height: 1;
 }
 
 .top-bar {
@@ -101,31 +143,7 @@
   opacity: 0.7;
 }
 
-.pet-area::before {
-  content: "";
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  background: #ffffff50;
-  border-radius: 50%;
-  filter: blur(20px);
-  z-index: 0;
-}
-
-.pet-placeholder {
-  font-size: 90px;
-  position: relative;
-  z-index: 1;
-}
-
-
-/* 🎉 FUN BACKGROUND EMOJIS (FINAL VERSION) */
-.home-shell {
-  position: relative;
-  overflow: hidden;
-}
-
-/* 🎉 FLOATING EMOJIS (SCATTERED CLEAN VERSION) */
+/* FLOATING EMOJIS */
 .floating-emoji {
   position: absolute;
   font-size: 60px;
@@ -152,18 +170,13 @@
 .e9 { top: 50%; left: 2%; }
 .e10 { bottom: 30%; right: 3%; }
 
-/* EXTRA FILL EMOJIS (YOUR RED SPOTS) */
+/* EXTRA FILL EMOJIS */
 .e11 { top: 22%; left: 28%; }
 .e12 { top: 22%; right: 30%; }
-
 .e13 { top: 48%; right: 22%; }
-
 .e14 { bottom: 8%; left: 50%; transform: translateX(-50%); }
-
 .e15 { bottom: 28%; left: 20%; }
 
-/* FLOAT ANIMATION */
-/* 🎉 FUN BOUNCY EMOJI ANIMATION */
 @keyframes floatMove {
   0% {
     transform: translateY(0px) rotate(0deg);
@@ -182,7 +195,6 @@
   }
 }
 
-/* 🎮 BUTTON FLOAT ANIMATION */
 @keyframes buttonFloat {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-8px); }
@@ -205,22 +217,15 @@
 .e9 { animation-duration: 3.6s; }
 .e10 { animation-duration: 4.8s; }
 
-
-
-/* 🔥 CHANGE GRADE BUTTON */
 .change-grade-btn {
   margin-top: 12px;
-
   padding: 10px 18px;
   font-size: 16px;
   font-weight: bold;
-
   border: none;
   border-radius: 20px;
-
   background: #e5e7eb;
   color: #333;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -230,7 +235,7 @@
   transform: scale(1.08);
 }
 
-/* 📱 TABLET */
+/* TABLET */
 @media (max-width: 900px) {
   .action-grid {
     grid-template-columns: 1fr;
@@ -241,7 +246,7 @@
     font-size: 22px;
   }
 
-  .action-btn span {
+  .action-btn span:first-child {
     font-size: 50px;
   }
 
@@ -254,7 +259,7 @@
   }
 }
 
-/* 📱 MOBILE */
+/* MOBILE */
 @media (max-width: 500px) {
   .home-shell {
     padding: 10px;
@@ -266,7 +271,7 @@
     font-size: 18px;
   }
 
-  .action-btn span {
+  .action-btn span:first-child {
     font-size: 40px;
   }
 
@@ -276,5 +281,9 @@
 
   .pet-placeholder {
     font-size: 70px;
+  }
+
+  .coming-soon-badge {
+    font-size: 12px !important;
   }
 }

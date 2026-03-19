@@ -37,7 +37,9 @@ function Navbar() {
           </li>
 
           <li>
-            <Link to="/pet-shop" className="up">Pet Shop</Link>
+            <span className="up nav-disabled" title="Pet Shop is work in progress">
+              ❌ Pet Shop
+            </span>
           </li>
 
           <li className="coins">🪙 {coins}</li>
