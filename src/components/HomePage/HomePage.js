@@ -182,7 +182,7 @@ function HomePage() {
           <span>🎁</span> Shop
         </button>
 
-        <button className="action-btn yellow">
+        <button className="action-btn yellow" onClick={() => navigate("/investments")}>
           <span>📈</span> Invest
         </button>
       </div>
