@@ -6,28 +6,31 @@
 
 // function HomePage() {
 //   const navigate = useNavigate();
-//   const [grade, setGrade] = useState(null);
+//   const [grade, setGrade] = useState(undefined);
 //   const [coins] = useCoins();
 
 //   useEffect(() => {
 //     const savedGrade = getGradeCookie();
-//     if (!savedGrade) navigate("/");
-//     else setGrade(savedGrade);
-//   }, [navigate]);
+//     setGrade(savedGrade || null);
+//   }, []);
+
+//   useEffect(() => {
+//     if (grade === null) {
+//       navigate("/", { replace: true });
+//     }
+//   }, [grade, navigate]);
 
 //   const changeGrade = () => {
 //     document.cookie = "userGrade=; path=/; max-age=0";
-//     setGrade(null); // 🔥 FIX
+//     navigate("/", { replace: true, state: { reset: true } });
 //   };
 
-//   if (!grade) {
-//     navigate("/");
+//   if (grade === undefined) {
 //     return null;
 //   }
 
 //   return (
 //     <div className="home-shell">
-//       {/* 🎉 Floating emojis */}
 //       <div className="floating-emoji e1">💰</div>
 //       <div className="floating-emoji e2">🎁</div>
 //       <div className="floating-emoji e3">💎</div>
@@ -62,25 +65,45 @@
 //         <div className="pet-placeholder">🐶</div>
 //       </div>
 
-//       <div className="coins-display">
-//         🪙 {coins}
-//       </div>
+//       <div className="coins-display">🪙 {coins}</div>
 
 //       <div className="action-grid">
-//         <button className="action-btn blue" onClick={() => navigate(`/units/${grade}`)}>
-//           <span>📚</span> Lessons
+//         <button
+//           className="action-btn blue"
+//           onClick={() => navigate(`/units/${grade}`)}
+//         >
+//           <span>📚</span>
+//           <span>Lessons</span>
 //         </button>
 
-//         <button className="action-btn green" onClick={() => navigate(`/assessments/${grade}`)}>
-//           <span>💯</span> Test
+//         <button
+//           className="action-btn green"
+//           onClick={() => navigate(`/assessments/${grade}`)}
+//         >
+//           <span>💯</span>
+//           <span>Test</span>
 //         </button>
 
-//         <button className="action-btn pink" onClick={() => navigate("/pet-shop")}>
-//           <span>🎁</span> Shop
+//         <button
+//           className="action-btn action-btn-disabled"
+//           disabled
+//           aria-disabled="true"
+//           title="Work in progress"
+//         >
+//           <span>🎁</span>
+//           <span>Pet Shop</span>
+//           <span className="coming-soon-badge">Work in Progress</span>
 //         </button>
 
-//         <button className="action-btn yellow" onClick={() => navigate("/investments")}>
-//           <span>📈</span> Invest
+//         <button
+//           className="action-btn action-btn-disabled"
+//           disabled
+//           aria-disabled="true"
+//           title="Work in progress"
+//         >
+//           <span>📈</span>
+//           <span>Invest</span>
+//           <span className="coming-soon-badge">Work in Progress</span>
 //         </button>
 //       </div>
 //     </div>
@@ -101,25 +124,30 @@ function HomePage() {
   const [grade, setGrade] = useState(undefined);
   const [coins] = useCoins();
 
+  // 🔥 Load grade from cookie on mount
   useEffect(() => {
     const savedGrade = getGradeCookie();
     setGrade(savedGrade || null);
   }, []);
 
-  useEffect(() => {
-    if (grade === null) {
-      navigate("/", { replace: true });
-    }
-  }, [grade, navigate]);
-
-  const changeGrade = () => {
-    document.cookie = "userGrade=; path=/; max-age=0";
-    navigate("/", { replace: true, state: { reset: true } });
-  };
-
+  // 🔥 Handle loading state
   if (grade === undefined) {
     return null;
   }
+
+  // 🔥 CRITICAL: handle missing grade properly
+  if (grade === null) {
+    navigate("/", { replace: true });
+    return null;
+  }
+
+  // 🔥 Change grade handler (FIXED)
+  const changeGrade = () => {
+  document.cookie = "userGrade=; path=/; max-age=0";
+
+  // 🔥 HARD RESET (fixes EVERYTHING)
+  window.location.replace("/");
+};
 
   return (
     <div className="home-shell">
