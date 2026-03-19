@@ -13,6 +13,7 @@ import SimulatorGame from './components/SimulatorGame/SimulatorGame';
 import AssessmentsPage from "./components/Assessments/AssessmentsPage";
 import AssessmentQuiz from "./components/Assessments/AssessmentQuiz";
 import AssessmentResults from "./components/Assessments/AssessmentResults";
+import Investments from "./components/Investments/Investments";
 
 import { getGradeCookie } from "./cookieUtils";
 
@@ -52,7 +53,7 @@ function App() {
 
         {/* Other */}
         <Route path="/pet-shop" element={<PetShop/>}/>
-        
+        <Route path="/investments" element={<Investments />} />
         <Route path="/simulation/:grade/:gameId" element={<SimulatorGame />} />
 
 

@@ -1,0 +1,304 @@
+.invest-page {
+  min-height: 100vh;
+  padding: 40px 28px 60px;
+  background: linear-gradient(180deg, #fff8db 0%, #dff5ff 100%);
+  font-family: Arial, sans-serif;
+}
+
+.invest-hero {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.invest-hero-text {
+  flex: 1;
+  min-width: 280px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.invest-hero-text h1 {
+  margin: 0 0 10px;
+  font-size: 2.3rem;
+  color: #204080;
+}
+
+.invest-hero-text p {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.invest-description {
+  color: #555;
+  line-height: 1.6;
+}
+
+.invest-mascot-card {
+  width: 320px;
+  background: #fff3fd;
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.invest-mascot {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.invest-mascot-card p {
+  margin: 0;
+  color: #5c2b73;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.invest-main-grid {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.invest-summary-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.invest-summary-card h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: #204080;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #edf0f7;
+}
+
+.summary-label {
+  color: #666;
+  font-weight: 600;
+}
+
+.summary-value {
+  color: #222;
+  font-weight: 700;
+  text-align: right;
+}
+
+.goal-progress-wrapper {
+  margin-top: 20px;
+}
+
+.goal-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #204080;
+}
+
+.goal-progress-bar {
+  width: 100%;
+  height: 18px;
+  background: #e7eefb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #49c6e5, #62d26f);
+  border-radius: 999px;
+}
+
+.invest-cards-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.investment-card {
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+}
+
+.investment-card.savingsNest {
+  background: #ecfff1;
+}
+
+.investment-card.petBakery {
+  background: #fff6e6;
+}
+
+.investment-card.toyRocketLab {
+  background: #ffe7f1;
+}
+
+.investment-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.investment-emoji {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.investment-top h3 {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+}
+
+.investment-top p {
+  margin: 0;
+  line-height: 1.5;
+  color: #555;
+}
+
+.investment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.risk-badge,
+.invested-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.risk-badge.low {
+  background: #ccf2d7;
+  color: #146b37;
+}
+
+.risk-badge.medium {
+  background: #ffe6b8;
+  color: #9b5d00;
+}
+
+.risk-badge.high {
+  background: #ffc9dd;
+  color: #a40046;
+}
+
+.invested-badge {
+  background: #ffffff;
+  color: #444;
+}
+
+.invest-btn,
+.advance-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.invest-btn {
+  background: #204080;
+  color: white;
+}
+
+.advance-btn {
+  background: #ffb703;
+  color: #1f2937;
+  margin-top: 10px;
+}
+
+.invest-btn:hover,
+.advance-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.invest-bottom-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.week-card,
+.updates-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.week-card h2,
+.updates-card h2 {
+  margin-top: 0;
+  color: #204080;
+}
+
+.week-card p {
+  color: #555;
+  line-height: 1.5;
+}
+
+.updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.update-item {
+  background: #f5f9ff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+@media (max-width: 992px) {
+  .invest-main-grid,
+  .invest-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .invest-cards-area {
+    grid-template-columns: 1fr;
+  }
+
+  .invest-mascot-card {
+    width: 100%;
+  }
+}
