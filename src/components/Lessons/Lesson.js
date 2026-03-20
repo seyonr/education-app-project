@@ -2112,6 +2112,9 @@ function Lesson() {
   const [wantBucketItems, setWantBucketItems] = useState([]);
   const [draggedItemId, setDraggedItemId] = useState(null);
 
+  const [showHintPopup, setShowHintPopup] = useState(false);
+  const [hintMessage, setHintMessage] = useState("");
+
   const currentBudgetTotal = useMemo(() => {
     return selectedBudgetItems.reduce((sum, item) => sum + item.price, 0);
   }, [selectedBudgetItems]);
@@ -2139,6 +2142,9 @@ function Lesson() {
 
     setRevealedCards([]);
     setDraggedItemId(null);
+
+    setShowHintPopup(false);
+    setHintMessage("");
 
     if (qType === "drag-drop") {
       setAvailableItems(q.items || []);
@@ -2180,19 +2186,13 @@ function Lesson() {
     }
 
     if (questionType === "drag-drop") {
-      return "Drag an item into Needs or Wants.";
+      return "";
     }
 
     return "Tap a picture to start.";
   };
 
   const progress = ((currentQuestion + 1) / lesson.questions.length) * 100;
-
-  const shortenText = (text, maxLength = 60) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return `${text.slice(0, maxLength).trim()}...`;
-  };
 
   const getMiniTitle = () => {
     return q.shortTitle || q.scenarioTitle || lesson.title;
@@ -2208,6 +2208,15 @@ function Lesson() {
 
   const getOptionLabel = (option) => {
     return option.shortText || option.text;
+  };
+
+  const getHintFromLessonData = () => {
+    return (
+      q.hintPopup ||
+      q.generalHint ||
+      lesson.tips ||
+      "Think carefully about the smartest money choice."
+    );
   };
 
   const markLessonComplete = () => {
@@ -2258,11 +2267,8 @@ function Lesson() {
   };
 
   const handleContext = () => {
-    navigate(`/lessonIntro/${grade}/${unit}/${lessonId}`, {
-      state: {
-        currentQuestion
-      }
-    });
+    setHintMessage(getHintFromLessonData());
+    setShowHintPopup(true);
   };
 
   const getFeedbackClass = () => {
@@ -2293,12 +2299,7 @@ function Lesson() {
     setWrongAttempts(nextWrongCount);
     setIsStepComplete(false);
 
-    setFeedback(
-
-        option.hint || q.generalHint || "Not quite. Tap the smarter picture.",
-        52
-      
-    );
+    setFeedback(option.hint || q.generalHint || "Not quite. Tap the smarter picture.");
     setFeedbackType("hint");
   };
 
@@ -2325,10 +2326,7 @@ function Lesson() {
     setBudgetSubmitted(true);
 
     if (sameItems && withinBudget) {
-      setFeedback(
-
-          q.successMessage || `Awesome! You stayed in $${q.budget}.`
-      );
+      setFeedback(q.successMessage || `Awesome! You stayed in $${q.budget}.`);
       setFeedbackType("correct");
       setIsStepComplete(true);
     } else if (!withinBudget) {
@@ -2336,11 +2334,7 @@ function Lesson() {
       setFeedbackType("hint");
       setIsStepComplete(false);
     } else {
-      setFeedback(
-
-          q.generalHint || "Good try! Pick the more important items first.",
- 
-      );
+      setFeedback(q.generalHint || "Good try! Pick the more important items first.");
       setFeedbackType("hint");
       setIsStepComplete(false);
     }
@@ -2357,9 +2351,7 @@ function Lesson() {
       setFeedbackType("correct");
       setIsStepComplete(true);
     } else {
-      setFeedback(
-        option.hint || q.generalHint || "Not yet. Check the clues again."
-      );
+      setFeedback(option.hint || q.generalHint || "Not yet. Check the clues again.");
       setFeedbackType("hint");
       setIsStepComplete(false);
     }
@@ -2421,9 +2413,6 @@ function Lesson() {
     classifyItem(draggedItem, bucket);
     setDraggedItemId(null);
   };
-
-  const totalDragItems = (q.items || []).length;
-  const sortedCount = needBucketItems.length + wantBucketItems.length;
 
   const getContextImages = () => {
     const imgs = [];
@@ -2520,6 +2509,7 @@ function Lesson() {
       );
     }
 
+    return null;
   };
 
   return (
@@ -2540,13 +2530,27 @@ function Lesson() {
           </div>
         </div>
 
+        {showHintPopup && (
+          <div className="hint-popup">
+            <div className="hint-popup-content">
+              <span className="hint-popup-icon">💡</span>
+              <div className="hint-popup-text">
+                <strong>Hint:</strong> {hintMessage}
+              </div>
+              <button
+                className="hint-popup-close"
+                onClick={() => setShowHintPopup(false)}
+                aria-label="Close hint"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="questions-container">
           <div className="left-container">
-            <div
-              className={`scenario-box ${
-                questionType === "budget-builder" ? "scenario-box-budget" : ""
-              }`}
-            >
+            <div className={`scenario-box ${questionType === "budget-builder" ? "scenario-box-budget" : ""}`}>
               {questionType === "budget-builder" && (
                 <div className="scenario-top-row">
                   <div
@@ -2599,9 +2603,7 @@ function Lesson() {
               <>
                 {q.options?.map((option, index) => (
                   <button
-                    className={`option-btn ${
-                      selectedOptionIndex === index ? "selected-option" : ""
-                    }`}
+                    className={`option-btn ${selectedOptionIndex === index ? "selected-option" : ""}`}
                     key={index}
                     onClick={() => chooseScenarioOption(option, index)}
                   >
@@ -2625,29 +2627,19 @@ function Lesson() {
               <div className="activity-panel">
                 <div className="budget-grid">
                   {q.items?.map((item) => {
-                    const isPicked = selectedBudgetItems.some(
-                      (picked) => picked.id === item.id
-                    );
+                    const isPicked = selectedBudgetItems.some((picked) => picked.id === item.id);
 
                     return (
                       <button
                         key={item.id}
-                        className={`budget-item-card ${
-                          isPicked ? "budget-item-selected" : ""
-                        }`}
+                        className={`budget-item-card ${isPicked ? "budget-item-selected" : ""}`}
                         onClick={() => toggleBudgetItem(item)}
                       >
                         <div className="budget-item-emoji">{item.emoji || "🛍️"}</div>
                         {item.img && (
-                          <img
-                            src={item.img}
-                            alt={item.name}
-                            className="budget-item-img"
-                          />
+                          <img src={item.img} alt={item.name} className="budget-item-img" />
                         )}
-                        <div className="budget-item-name">
-                          {item.name}
-                        </div>
+                        <div className="budget-item-name">{item.name}</div>
                         <div className="budget-item-price">${item.price}</div>
                       </button>
                     );
@@ -2715,9 +2707,7 @@ function Lesson() {
 
                     <div className="drag-drop-zone-list">
                       <div
-                        className={`drop-zone need-zone ${
-                          draggedItemId ? "drop-zone-ready" : ""
-                        }`}
+                        className={`drop-zone need-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
                         onDragOver={handleDragOver}
                         onDrop={() => handleDropToBucket("need")}
                       >
@@ -2735,9 +2725,7 @@ function Lesson() {
                       </div>
 
                       <div
-                        className={`drop-zone want-zone ${
-                          draggedItemId ? "drop-zone-ready" : ""
-                        }`}
+                        className={`drop-zone want-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
                         onDragOver={handleDragOver}
                         onDrop={() => handleDropToBucket("want")}
                       >
@@ -2757,31 +2745,20 @@ function Lesson() {
                   </div>
 
                   <div className="drag-items-panel">
-                    <div className="drag-items-title">
-                      Pick a Picture
-                      <span style={{ marginLeft: 8 }}>
-                        {sortedCount}/{totalDragItems}
-                      </span>
-                    </div>
+                    <div className="drag-items-title">Pick a Picture</div>
 
                     <div className="drag-bank">
                       {availableItems.map((item) => (
                         <div
                           key={item.id}
-                          className={`drag-item-card ${
-                            draggedItemId === item.id ? "drag-item-active" : ""
-                          }`}
+                          className={`drag-item-card ${draggedItemId === item.id ? "drag-item-active" : ""}`}
                           draggable
                           onDragStart={() => handleDragStart(item.id)}
                         >
                           <div className="drag-item-glow"></div>
 
                           {item.img ? (
-                            <img
-                              src={item.img}
-                              alt={item.name}
-                              className="drag-item-img"
-                            />
+                            <img src={item.img} alt={item.name} className="drag-item-img" />
                           ) : (
                             <div className="drag-item-emoji">{item.emoji || "📦"}</div>
                           )}
@@ -2808,11 +2785,11 @@ function Lesson() {
                 <strong>{getFeedbackTitle()}</strong>
                 <span>{feedback}</span>
               </div>
-            ) : (
+            ) : getDefaultInstruction() ? (
               <div className="feedback-pill feedback-empty">
                 <span>{getDefaultInstruction()}</span>
               </div>
-            )}
+            ) : null}
           </div>
 
           <div className="sticky-actions">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import lessonsData from "../../data/lessons";
 import "./LessonIntro.css";
@@ -7,8 +7,6 @@ function LessonIntro() {
   const { grade, unit, lessonId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [openIndex, setOpenIndex] = useState(null);
 
   const savedQuestion = location.state?.currentQuestion ?? 0;
   const unitLesson = lessonsData[grade]?.[unit];
@@ -24,10 +22,6 @@ function LessonIntro() {
     });
   };
 
-  const toggleItem = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <div className="intro-page">
 
@@ -37,38 +31,23 @@ function LessonIntro() {
         <h1>{lesson.title}</h1>
       </div>
 
-      {/* 🎯 WHAT YOU'LL LEARN (INTERACTIVE) */}
+      {/* 🎯 WHAT YOU'LL LEARN (NO DROPDOWN) */}
       <div className="learn-box">
         <div className="learn-title">🎯 What you'll learn</div>
 
         {(lesson.context || []).map((item, index) => (
           <div key={index} className="learn-item">
 
-            {/* CLICKABLE TITLE */}
-            {/* <button
-              className="learn-button"
-              onClick={() => toggleItem(index)}
-            >
-              {item.term} {openIndex === index ? "▲" : "▼"}
-            </button> */}
+            {/* TERM */}
+            <div className="learn-term">
+              {item.term}
+            </div>
 
-            <button
-  className="learn-button"
-  onClick={() => toggleItem(index)}
->
-  <span>{item.term}</span>
+            {/* ALWAYS VISIBLE DEFINITION */}
+            <div className="learn-content">
+              {item.definition}
+            </div>
 
-  <span className={`chevron ${openIndex === index ? "open" : ""}`}>
-    ⌄
-  </span>
-</button>
-
-            {/* EXPANDED CONTENT */}
-            {openIndex === index && (
-              <div className="learn-content">
-                {item.definition?.split(".")[0]}.
-              </div>
-            )}
           </div>
         ))}
       </div>
