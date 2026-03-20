@@ -13,10 +13,18 @@
     z-index: 10;
 }
 
+.logo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
 .logo img {
     height: 100px;
     width: auto;
     display: block;
+    transform: scale(1.8);
+    transform-origin: left center;
 }
 
 .nav-list ul {

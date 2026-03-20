@@ -5,7 +5,7 @@
   gap: 20px;
   padding: 28px 20px 64px;
   min-height: 100vh;
-  background: #fff8f1;
+  background: transparent;
   color: var(--ink-900);
   font-family: var(--body-font);
   position: relative;
@@ -14,7 +14,7 @@
 }
 
 .assessment-container::before {
-  content: "";
+  content: none;
   position: absolute;
   left: -120px;
   top: 200px;
@@ -168,6 +168,37 @@
   gap: 16px;
 }
 
+.assessments-floating {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.assessments-float {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0.15;
+  animation: floatUnit 6s ease-in-out infinite;
+}
+
+.assessments-u1 { top: 10%; left: 8%; }
+.assessments-u2 { top: 20%; right: 10%; }
+.assessments-u3 { bottom: 20%; left: 10%; }
+.assessments-u4 { bottom: 15%; right: 8%; }
+.assessments-u5 { top: 50%; left: 50%; }
+.assessments-u6 { top: 12%; right: 18%; }
+.assessments-u7 { top: 40%; left: 6%; }
+.assessments-u8 { top: 55%; right: 6%; }
+.assessments-u9 { bottom: 8%; left: 40%; }
+.assessments-u10 { bottom: 12%; right: 18%; }
+
+@keyframes floatUnit {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
 .pet-floating-container {
   position: fixed;
   right: 16px;
@@ -218,6 +249,11 @@
   filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.24)) brightness(1.06);
 }
 
+.pet-wip .pet-floating-character:hover .pet-floating-image {
+  transform: none;
+  filter: grayscale(1) brightness(0.75) drop-shadow(0 10px 14px rgba(0, 0, 0, 0.14));
+}
+
 .pet-floating-character.is-bouncing {
   animation: petFloat 3.2s ease-in-out infinite, petPop 0.35s ease;
 }
@@ -243,6 +279,39 @@
   background: radial-gradient(circle, rgba(255, 214, 102, 0.9), transparent 70%);
   opacity: 0.3;
   animation: petSparkle 2.8s ease-in-out infinite;
+}
+
+.pet-wip-label {
+  background: #e5e7eb;
+  color: #475569;
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin-right: 8px;
+  margin-bottom: 6px;
+}
+
+.pet-disabled {
+  pointer-events: none;
+  cursor: default;
+  animation: none;
+}
+
+.pet-disabled .pet-floating-image {
+  filter: grayscale(1) brightness(0.75) drop-shadow(0 10px 14px rgba(0, 0, 0, 0.14));
+  opacity: 0.8;
+}
+
+.pet-disabled .pet-ground-shadow {
+  opacity: 0.35;
+}
+
+.pet-disabled .pet-sparkle {
+  opacity: 0.08;
 }
 
 .assessment-hero {

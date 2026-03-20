@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import assessmentsData from "../../data/assessments";
 import lessonsData from "../../data/lessons";
@@ -11,37 +11,6 @@ function AssessmentsPage() {
 
   const gradeKey = grade?.startsWith("grade") ? grade : `grade${grade}`;
   const gradeLabel = gradeKey.replace("grade", "");
-
-  const [petIsBouncing, setPetIsBouncing] = useState(false);
-  const [petMessage, setPetMessage] = useState("");
-
-  useEffect(() => {
-    setPetMessage("Are you ready? 🎯");
-    const timer = window.setTimeout(() => setPetMessage(""), 2800);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  const petPrompts = [
-    "You got this! 💪",
-    "Pick a mission! 🚀",
-    "Easy coins here 💰",
-    "Ready for today’s quiz? 🎯"
-  ];
-  const lockedPrompts = [
-    "Finish the lesson first! 🔒",
-    "Almost there! 📘",
-    "Complete the lesson! ✅"
-  ];
-
-  const pickMessage = (list) => list[Math.floor(Math.random() * list.length)];
-  const handlePetEncourage = () => setPetMessage(pickMessage(petPrompts));
-  const handlePetLocked = () => setPetMessage(pickMessage(lockedPrompts));
-  const resetPetMessage = () => setPetMessage("");
-
-  const handlePetClick = () => {
-    setPetIsBouncing(true);
-    window.setTimeout(() => setPetIsBouncing(false), 450);
-  };
 
   const gradeAssessments = assessmentsData[gradeKey];
 
@@ -66,6 +35,19 @@ function AssessmentsPage() {
 
   return (
     <div className="assessment-container">
+      <div className="assessments-floating" aria-hidden="true">
+        <span className="assessments-float assessments-u1">💰</span>
+        <span className="assessments-float assessments-u2">🎁</span>
+        <span className="assessments-float assessments-u3">💎</span>
+        <span className="assessments-float assessments-u4">⭐</span>
+        <span className="assessments-float assessments-u5">🪙</span>
+        <span className="assessments-float assessments-u6">💸</span>
+        <span className="assessments-float assessments-u7">📚</span>
+        <span className="assessments-float assessments-u8">✨</span>
+        <span className="assessments-float assessments-u9">🎯</span>
+        <span className="assessments-float assessments-u10">💵</span>
+      </div>
+
       <div className="assessment-hero playful">
         <div>
           <div className="assessment-badge">Grade {gradeLabel}</div>
@@ -99,14 +81,6 @@ function AssessmentsPage() {
                   }
                   navigate(`/assessment/${grade}/${unit}`);
                 }}
-                onMouseEnter={() => {
-                  if (isLocked) {
-                    handlePetLocked();
-                    return;
-                  }
-                  handlePetEncourage();
-                }}
-                onMouseLeave={resetPetMessage}
               >
                 <div className="assessment-level-head">
                   <div className="assessment-level-icon">{meta.emoji}</div>
@@ -130,23 +104,9 @@ function AssessmentsPage() {
         </div>
       </div>
 
-      <div className="pet-floating-container">
-        {petMessage ? (
-          <div className="pet-message" key={petMessage}>{petMessage}</div>
-        ) : null}
-        <div
-          className={`pet-floating-character${petIsBouncing ? " is-bouncing" : ""}`}
-          onClick={handlePetClick}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              handlePetClick();
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Pet mascot"
-        >
+      <div className="pet-floating-container pet-wip">
+        <div className="pet-wip-label">Pet Helper - Work in Progress</div>
+        <div className="pet-floating-character pet-disabled" aria-label="Pet mascot work in progress">
           <img className="pet-floating-image" src={petImage} alt="Pet mascot" />
           <span className="pet-ground-shadow" aria-hidden="true" />
           <span className="pet-sparkle" aria-hidden="true" />
