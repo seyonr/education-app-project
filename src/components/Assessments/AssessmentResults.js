@@ -142,10 +142,10 @@ function AssessmentResults() {
           <div className="result-reward-sub">{petMessage}</div>
         </div>
         <button
-          className="assessment-action primary"
-          onClick={() => navigate("/pet-shop")}
+          className="temp-disable" title="Pet shop is work in progress"
+          
         >
-          Visit Pet Shop
+          ❌ Visit Pet Shop
         </button>
       </div>
 
