@@ -20,7 +20,7 @@
   padding: 10px 20px;
   border-radius: 999px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 25px;
   margin-bottom: 12px;
 }
 
@@ -43,7 +43,7 @@
 
 /* TITLE */
 .learn-title {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 900;
   margin-bottom: 14px;
 }
@@ -96,8 +96,8 @@
   background: #ffffff;
   border-radius: 14px;
 
-  font-size: 18px;
-
+  font-size: 20px;
+  text-align: center;
   animation: fadeSlide 0.3s ease;
 }
 
@@ -155,4 +155,8 @@
 /* 🎉 FUN BOUNCE (SUBTLE) */
 .intro-btn:active {
   transform: scale(0.95);
+}
+
+.learn-term{
+  font-size: 24px;
 }
