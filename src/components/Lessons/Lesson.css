@@ -1878,7 +1878,7 @@
 }
 
 .scenario-text {
-    font-size: 15px;
+    font-size: 22px;
     line-height: 1.2;
     margin: 0;
     text-align: center;
@@ -2095,7 +2095,7 @@
 }
 
 .option-txt {
-    font-size: 24px;
+    font-size: 28px;
     line-height: 1.12;
     margin: 0;
     color: var(--text-dark);
@@ -2638,7 +2638,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 126px;
+    min-width: 150px;
 }
 
 .context-btn {
