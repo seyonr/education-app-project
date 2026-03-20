@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
 
-const COINS_KEY = "coins";
+const PRIMARY_COINS_KEY = "pennypalsCoins";
+const LEGACY_COINS_KEY = "coins";
 const DEFAULT_COINS = 0;
 
 export const readCoins = () => {
-  const raw = localStorage.getItem(COINS_KEY);
-  const parsed = raw ? Number(raw) : DEFAULT_COINS;
+  const primaryRaw = localStorage.getItem(PRIMARY_COINS_KEY);
+  const legacyRaw = localStorage.getItem(LEGACY_COINS_KEY);
+
+  const raw = primaryRaw ?? legacyRaw ?? DEFAULT_COINS;
+  const parsed = Number(raw);
+
   return Number.isNaN(parsed) ? DEFAULT_COINS : parsed;
 };
 
 export const writeCoins = (value) => {
-  localStorage.setItem(COINS_KEY, String(value));
+  const safeValue = Math.max(0, Number(value) || 0);
+
+  localStorage.setItem(PRIMARY_COINS_KEY, String(safeValue));
+  localStorage.setItem(LEGACY_COINS_KEY, String(safeValue));
   window.dispatchEvent(new Event("coins-updated"));
 };
 
@@ -26,7 +34,14 @@ export const useCoins = () => {
 
   useEffect(() => {
     const handleStorage = (event) => {
-      if (event.key && event.key !== COINS_KEY) return;
+      if (
+        event.key &&
+        event.key !== PRIMARY_COINS_KEY &&
+        event.key !== LEGACY_COINS_KEY
+      ) {
+        return;
+      }
+
       setCoinsState(readCoins());
     };
 
@@ -46,6 +61,7 @@ export const useCoins = () => {
   const setCoins = (value) => {
     const next = typeof value === "function" ? value(readCoins()) : value;
     if (Number.isNaN(next)) return;
+
     writeCoins(next);
     setCoinsState(next);
   };

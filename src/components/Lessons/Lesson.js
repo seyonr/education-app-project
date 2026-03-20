@@ -2070,7 +2070,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import lessonsData from "../../data/lessons";
+import { addCoins } from "../../coinUtils";
 import "./Lesson.css";
+
+const LESSON_REWARD = 10;
+const UNIT_REWARD = 30;
 
 function Lesson() {
   const { grade, unit, lessonId } = useParams();
@@ -2161,6 +2165,7 @@ function Lesson() {
   }
 
   const questionType = q.type || lesson.type || "scenario-choice";
+
   const getDefaultInstruction = () => {
     if (questionType === "scenario-choice") {
       return "Tap the best picture.";
@@ -2198,11 +2203,11 @@ function Lesson() {
   };
 
   const getMiniQuestion = () => {
-    return q.shortQuestion || shortenText(q.question, 48);
+    return q.shortQuestion || q.question;
   };
 
   const getOptionLabel = (option) => {
-    return option.shortText || shortenText(option.text, 20);
+    return option.shortText || option.text;
   };
 
   const markLessonComplete = () => {
@@ -2212,17 +2217,32 @@ function Lesson() {
     if (!saved.includes(Number(lessonId))) {
       const updated = [...saved, Number(lessonId)];
       localStorage.setItem(key, JSON.stringify(updated));
+      return updated;
     }
+
+    return saved;
   };
 
-  const awardCoins = () => {
-    const currentCoins = Number(localStorage.getItem("pennypalsCoins") || 120);
-    const reward = lesson.coinReward || 15;
+  const awardLessonCoins = () => {
     const rewardKey = `coins_awarded_${grade}_${unit}_${lessonId}`;
 
     if (!localStorage.getItem(rewardKey)) {
-      localStorage.setItem("pennypalsCoins", String(currentCoins + reward));
+      addCoins(LESSON_REWARD);
       localStorage.setItem(rewardKey, "true");
+    }
+  };
+
+  const awardUnitCoins = (completedLessonCount) => {
+    const totalLessonsInUnit = unitLessons.length;
+    const unitRewardKey = `unit_reward_awarded_${grade}_${unit}`;
+
+    if (
+      totalLessonsInUnit > 0 &&
+      completedLessonCount === totalLessonsInUnit &&
+      !localStorage.getItem(unitRewardKey)
+    ) {
+      addCoins(UNIT_REWARD);
+      localStorage.setItem(unitRewardKey, "true");
     }
   };
 
@@ -2230,8 +2250,9 @@ function Lesson() {
     if (currentQuestion < lesson.questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
     } else {
-      markLessonComplete();
-      awardCoins();
+      const completedLessons = markLessonComplete();
+      awardLessonCoins();
+      awardUnitCoins(completedLessons.length);
       navigate(`/lessons/${grade}/${unit}`);
     }
   };
@@ -2262,7 +2283,7 @@ function Lesson() {
     setSelectedOptionIndex(index);
 
     if (option.isBest) {
-      setFeedback(shortenText(option.effect || "Awesome! That is the best choice.", 52));
+      setFeedback(option.effect || "Awesome! That is the best choice.");
       setFeedbackType("correct");
       setIsStepComplete(true);
       return;
@@ -2273,10 +2294,10 @@ function Lesson() {
     setIsStepComplete(false);
 
     setFeedback(
-      shortenText(
+
         option.hint || q.generalHint || "Not quite. Tap the smarter picture.",
         52
-      )
+      
     );
     setFeedbackType("hint");
   };
@@ -2305,10 +2326,8 @@ function Lesson() {
 
     if (sameItems && withinBudget) {
       setFeedback(
-        shortenText(
-          q.successMessage || `Awesome! You stayed in $${q.budget}.`,
-          52
-        )
+
+          q.successMessage || `Awesome! You stayed in $${q.budget}.`
       );
       setFeedbackType("correct");
       setIsStepComplete(true);
@@ -2318,10 +2337,9 @@ function Lesson() {
       setIsStepComplete(false);
     } else {
       setFeedback(
-        shortenText(
+
           q.generalHint || "Good try! Pick the more important items first.",
-          52
-        )
+ 
       );
       setFeedbackType("hint");
       setIsStepComplete(false);
@@ -2335,12 +2353,12 @@ function Lesson() {
 
   const answerTapReveal = (option) => {
     if (option.isBest) {
-      setFeedback(shortenText(option.effect || "Nice job! You used the clues.", 52));
+      setFeedback(option.effect || "Nice job! You used the clues.");
       setFeedbackType("correct");
       setIsStepComplete(true);
     } else {
       setFeedback(
-        shortenText(option.hint || q.generalHint || "Not yet. Check the clues again.", 52)
+        option.hint || q.generalHint || "Not yet. Check the clues again."
       );
       setFeedbackType("hint");
       setIsStepComplete(false);
@@ -2355,6 +2373,11 @@ function Lesson() {
     event.preventDefault();
   };
 
+  const bucketLabels = q.bucketLabels || {
+    need: "Needs",
+    want: "Wants"
+  };
+
   const classifyItem = (item, bucket) => {
     if (!item) return;
 
@@ -2363,7 +2386,9 @@ function Lesson() {
     const isCorrect = actualBucket === bucket;
 
     if (!isCorrect) {
-      setFeedback(`${label} goes in ${actualBucket === "need" ? bucketLabels.need : bucketLabels.want}. Try again!`);
+      setFeedback(
+        `${label} goes in ${actualBucket === "need" ? bucketLabels.need : bucketLabels.want}. Try again!`
+      );
       setFeedbackType("hint");
       setIsStepComplete(false);
       return;
@@ -2395,11 +2420,6 @@ function Lesson() {
     const draggedItem = availableItems.find((item) => item.id === draggedItemId);
     classifyItem(draggedItem, bucket);
     setDraggedItemId(null);
-  };
-
-  const bucketLabels = q.bucketLabels || {
-    need: "Needs",
-    want: "Wants"
   };
 
   const totalDragItems = (q.items || []).length;
@@ -2457,11 +2477,13 @@ function Lesson() {
     });
 
     const seen = new Set();
-    return visuals.filter((item) => {
-      if (!item.src || seen.has(item.src)) return false;
-      seen.add(item.src);
-      return true;
-    }).slice(0, 6);
+    return visuals
+      .filter((item) => {
+        if (!item.src || seen.has(item.src)) return false;
+        seen.add(item.src);
+        return true;
+      })
+      .slice(0, 6);
   };
 
   const renderHero = () => {
@@ -2497,6 +2519,7 @@ function Lesson() {
         </div>
       );
     }
+
   };
 
   return (
@@ -2517,15 +2540,19 @@ function Lesson() {
           </div>
         </div>
 
-
         <div className="questions-container">
           <div className="left-container">
-            <div className={`scenario-box ${questionType === "budget-builder" ? "scenario-box-budget" : ""}`}>
+            <div
+              className={`scenario-box ${
+                questionType === "budget-builder" ? "scenario-box-budget" : ""
+              }`}
+            >
               {questionType === "budget-builder" && (
                 <div className="scenario-top-row">
                   <div
-                    className={`budget-total-card budget-total-card-inline ${currentBudgetTotal > (q.budget || 0) ? "over-budget" : ""
-                      }`}
+                    className={`budget-total-card budget-total-card-inline ${
+                      currentBudgetTotal > (q.budget || 0) ? "over-budget" : ""
+                    }`}
                   >
                     <span>Total</span>
                     <strong>
@@ -2539,16 +2566,24 @@ function Lesson() {
 
               {getMiniText() && <p className="scenario-text">{getMiniText()}</p>}
 
-              {(q.walletAmount !== undefined || q.goal || (q.budget !== undefined && questionType !== "budget-builder")) && (
+              {(q.walletAmount !== undefined ||
+                q.goal ||
+                (q.budget !== undefined && questionType !== "budget-builder")) && (
                 <div className="scenario-stats">
                   {q.walletAmount !== undefined && (
-                    <div className="scenario-pill"><strong>💰</strong> ${q.walletAmount}</div>
+                    <div className="scenario-pill">
+                      <strong>💰</strong> ${q.walletAmount}
+                    </div>
                   )}
                   {q.budget !== undefined && questionType !== "budget-builder" && (
-                    <div className="scenario-pill"><strong>🛒</strong> ${q.budget}</div>
+                    <div className="scenario-pill">
+                      <strong>🛒</strong> ${q.budget}
+                    </div>
                   )}
                   {q.goal && (
-                    <div className="scenario-pill"><strong>🎯</strong> {q.goal}</div>
+                    <div className="scenario-pill">
+                      <strong>🎯</strong> {q.goal}
+                    </div>
                   )}
                 </div>
               )}
@@ -2564,7 +2599,9 @@ function Lesson() {
               <>
                 {q.options?.map((option, index) => (
                   <button
-                    className={`option-btn ${selectedOptionIndex === index ? "selected-option" : ""}`}
+                    className={`option-btn ${
+                      selectedOptionIndex === index ? "selected-option" : ""
+                    }`}
                     key={index}
                     onClick={() => chooseScenarioOption(option, index)}
                   >
@@ -2578,7 +2615,6 @@ function Lesson() {
 
                     <div className="option-copy">
                       <p className="option-txt">{getOptionLabel(option)}</p>
-
                     </div>
                   </button>
                 ))}
@@ -2589,23 +2625,30 @@ function Lesson() {
               <div className="activity-panel">
                 <div className="budget-grid">
                   {q.items?.map((item) => {
-                    const isPicked = selectedBudgetItems.some((picked) => picked.id === item.id);
+                    const isPicked = selectedBudgetItems.some(
+                      (picked) => picked.id === item.id
+                    );
 
                     return (
                       <button
                         key={item.id}
-                        className={`budget-item-card ${isPicked ? "budget-item-selected" : ""}`}
+                        className={`budget-item-card ${
+                          isPicked ? "budget-item-selected" : ""
+                        }`}
                         onClick={() => toggleBudgetItem(item)}
                       >
                         <div className="budget-item-emoji">{item.emoji || "🛍️"}</div>
                         {item.img && (
-                          <img src={item.img} alt={item.name} className="budget-item-img" />
+                          <img
+                            src={item.img}
+                            alt={item.name}
+                            className="budget-item-img"
+                          />
                         )}
-                        <div className="budget-item-name">{shortenText(item.name, 16)}</div>
+                        <div className="budget-item-name">
+                          {item.name}
+                        </div>
                         <div className="budget-item-price">${item.price}</div>
-                        {/* {item.tag && (
-                          <div className="budget-item-tag">{shortenText(item.tag, 18)}</div>
-                        )} */}
                       </button>
                     );
                   })}
@@ -2666,28 +2709,18 @@ function Lesson() {
 
             {questionType === "drag-drop" && (
               <div className="activity-panel activity-panel-drag">
-                {/* <div className="drag-game-topbar">
-                  <div className="drag-game-chip">🎮 Sort Game</div>
-                  <div className="drag-game-chip">
-                    ⭐ {sortedCount} / {totalDragItems} Sorted
-                  </div>
-                </div>
-
-                <div className="drag-game-subtitle">
-                  Drag a picture or tap a quick button.
-                </div> */}
-
                 <div className="drag-layout">
                   <div className="drag-buckets-panel">
                     <div className="drag-buckets-title">Drop Zone</div>
 
                     <div className="drag-drop-zone-list">
                       <div
-                        className={`drop-zone need-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
+                        className={`drop-zone need-zone ${
+                          draggedItemId ? "drop-zone-ready" : ""
+                        }`}
                         onDragOver={handleDragOver}
                         onDrop={() => handleDropToBucket("need")}
                       >
-                        {/* <div className="drop-zone-icon">✅</div> */}
                         <h4>{bucketLabels.need}</h4>
                         <p className="drop-zone-mini">Must-have items</p>
 
@@ -2695,18 +2728,19 @@ function Lesson() {
                           {needBucketItems.map((item) => (
                             <div key={item.id} className="sorted-pill">
                               <span>{item.emoji || "✅"}</span>
-                              <span>{shortenText(item.label || item.name, 12)}</span>
+                              <span>{item.label || item.name}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
                       <div
-                        className={`drop-zone want-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
+                        className={`drop-zone want-zone ${
+                          draggedItemId ? "drop-zone-ready" : ""
+                        }`}
                         onDragOver={handleDragOver}
                         onDrop={() => handleDropToBucket("want")}
                       >
-                        {/* <div className="drop-zone-icon">🎉</div> */}
                         <h4>{bucketLabels.want}</h4>
                         <p className="drop-zone-mini">Fun extras</p>
 
@@ -2714,7 +2748,7 @@ function Lesson() {
                           {wantBucketItems.map((item) => (
                             <div key={item.id} className="sorted-pill">
                               <span>{item.emoji || "✅"}</span>
-                              <span>{shortenText(item.label || item.name, 12)}</span>
+                              <span>{item.label || item.name}</span>
                             </div>
                           ))}
                         </div>
@@ -2723,27 +2757,37 @@ function Lesson() {
                   </div>
 
                   <div className="drag-items-panel">
-                    <div className="drag-items-title">Pick a Picture</div>
+                    <div className="drag-items-title">
+                      Pick a Picture
+                      <span style={{ marginLeft: 8 }}>
+                        {sortedCount}/{totalDragItems}
+                      </span>
+                    </div>
 
                     <div className="drag-bank">
                       {availableItems.map((item) => (
                         <div
                           key={item.id}
-                          className={`drag-item-card ${draggedItemId === item.id ? "drag-item-active" : ""
-                            }`}
+                          className={`drag-item-card ${
+                            draggedItemId === item.id ? "drag-item-active" : ""
+                          }`}
                           draggable
                           onDragStart={() => handleDragStart(item.id)}
                         >
                           <div className="drag-item-glow"></div>
 
                           {item.img ? (
-                            <img src={item.img} alt={item.name} className="drag-item-img" />
+                            <img
+                              src={item.img}
+                              alt={item.name}
+                              className="drag-item-img"
+                            />
                           ) : (
                             <div className="drag-item-emoji">{item.emoji || "📦"}</div>
                           )}
 
                           <div className="drag-item-label">
-                            {shortenText(item.label || item.name, 16)}
+                            {item.label || item.name}
                           </div>
                         </div>
                       ))}

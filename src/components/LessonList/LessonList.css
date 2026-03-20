@@ -79,12 +79,30 @@
 
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
-/* ✨ FUN HOVER */
+/* FUN HOVER */
 .lesson-card-simple:hover {
   transform: scale(1.07) rotate(-1deg);
   box-shadow: 0 18px 26px rgba(0,0,0,0.12);
+}
+
+/* REWARD BADGE */
+.lesson-reward-badge {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+
+  background: #fde68a;
+  color: #4b3b00;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid #facc15;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  line-height: 1;
 }
 
 /* LEFT SIDE */
@@ -110,6 +128,7 @@
 .lesson-status {
   font-size: 16px;
   font-weight: bold;
+  margin-top: 20px;
 }
 
 /* DONE STATE */
@@ -117,7 +136,7 @@
   background: #ecfdf5;
 }
 
-/* 🎉 COMPLETE BOX */
+/* COMPLETE BOX */
 .lesson-complete-box {
   margin-top: 20px;
   padding: 20px;
@@ -145,7 +164,7 @@
   transform: scale(1.05);
 }
 
-/* 🎯 ANIMATION */
+/* ANIMATION */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }

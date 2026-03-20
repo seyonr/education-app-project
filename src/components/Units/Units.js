@@ -131,7 +131,6 @@
 
 // export default Units;
 
-
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import lessonsData from "../../data/lessons";
@@ -158,7 +157,7 @@ function Units() {
   }
 
   const unitKeys = Object.keys(units).filter(
-    (key) => key.toLowerCase() !== "game" // 🔥 REMOVE GAME TAB
+    (key) => key.toLowerCase() !== "game"
   );
 
   const unitSummaries = unitKeys.map((unitKey) => {
@@ -179,14 +178,12 @@ function Units() {
 
   return (
     <section className="units-page">
-      {/* HEADER */}
       <div className="units-header">
         <div className="units-badge">Grade {gradeLabel}</div>
         <h1>Pick a Unit 📖</h1>
         <p>Choose where you want to start!</p>
       </div>
 
-      {/* FLOATING EMOJIS */}
       <div className="units-floating">
         <span className="units-float units-u1">💰</span>
         <span className="units-float units-u2">⭐</span>
@@ -201,25 +198,21 @@ function Units() {
         <span className="units-float units-u10">💸</span>
       </div>
 
-      {/* UNIT GRID */}
       <div className="unit-grid">
         {unitSummaries.map((summary, index) => (
           <button
             key={summary.unitKey}
             className="unit-card"
-            onClick={() =>
-              navigate(`/lessons/${gradeKey}/${summary.unitKey}`)
-            }
+            onClick={() => navigate(`/lessons/${gradeKey}/${summary.unitKey}`)}
           >
-            {/* NUMBER EMOJI */}
             <div className="unit-number">{index + 1}</div>
 
-            {/* TITLE */}
+            <div className="unit-reward-badge">🪙 +30</div>
+
             <div className="unit-title">
               {summary.unitKey.split(/(?=\d)/).join(" ").toUpperCase()}
             </div>
 
-            {/* PROGRESS BAR */}
             <div className="unit-progress">
               <div
                 className="unit-progress-bar"
@@ -227,10 +220,7 @@ function Units() {
               />
             </div>
 
-            {/* PERCENT */}
-            <div className="unit-percent">
-              {summary.progressPercent}%
-            </div>
+            <div className="unit-percent">{summary.progressPercent}%</div>
           </button>
         ))}
       </div>
@@ -239,8 +229,6 @@ function Units() {
 }
 
 export default Units;
-
-
 
 // .units-page {
 //   min-height: 100vh;

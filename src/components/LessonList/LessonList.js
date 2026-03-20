@@ -28,7 +28,6 @@ function LessonList() {
     lessons.length > 0 &&
     completedLessons.length === lessons.length;
 
-  // 🎨 ICON SYSTEM
   const unitIcons = {
     savings: ["💰", "🏦", "🪙", "💵"],
     spending: ["🛍️", "🎮", "🍕", "🎁"],
@@ -42,15 +41,12 @@ function LessonList() {
 
   return (
     <section className="lesson-page-simple">
-      
-      {/* HEADER */}
       <div className="lesson-header">
         <div className="lesson-badge">Grade {gradeLabel}</div>
         <h1>{unit.toUpperCase()}</h1>
         <p>Tap a lesson to start 🚀</p>
       </div>
 
-      {/* PROGRESS */}
       <div className="lesson-progress-simple">
         <div className="progress-bar">
           <div
@@ -63,7 +59,6 @@ function LessonList() {
         </div>
       </div>
 
-      {/* LESSONS */}
       <div className="lesson-stack">
         {lessons.map((lesson, index) => {
           const done = completedLessons.includes(lesson.id);
@@ -76,6 +71,8 @@ function LessonList() {
               }
               className={`lesson-card-simple ${done ? "done" : ""}`}
             >
+              <div className="lesson-reward-badge">🪙 +10</div>
+
               <div className="lesson-left">
                 <div className="lesson-icon">
                   {icons[index % icons.length]}
@@ -94,7 +91,6 @@ function LessonList() {
         })}
       </div>
 
-      {/* 🎉 COMPLETE SECTION */}
       {isComplete && (
         <div className="lesson-complete-box">
           🎉 Unit Complete!
