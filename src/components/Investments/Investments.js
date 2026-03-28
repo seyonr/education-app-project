@@ -1,84 +1,152 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useCoins } from "../../coinUtils";
 import "./Investments.css";
 
-function Investments() {
-  const startingCoins = 120;
-  const goalAmount = 300;
+const INVESTMENTS_STORAGE_KEY = "pennypalsInvestmentsState_v1";
+const GOAL_AMOUNT = 300;
+const INVEST_AMOUNT = 20;
 
-  const [coins, setCoins] = useState(startingCoins);
-  const [goalProgress, setGoalProgress] = useState(120);
-  const [helperMessage, setHelperMessage] = useState(
-    "Penny says: Investing helps your coins grow over time!"
-  );
-  const [activityLog, setActivityLog] = useState([
-    "Welcome to the Pet Future Fund! Pick an investment to get started."
-  ]);
-
-  const [portfolio, setPortfolio] = useState({
+const defaultState = {
+  weekCount: 1,
+  helperMessage: "Pick a place for your coins!",
+  portfolio: {
     savingsNest: 0,
     petBakery: 0,
     toyRocketLab: 0,
-  });
+  },
+  weeklyResults: [
+    { name: "Welcome!", value: "+0", mood: "neutral", emoji: "🌟" },
+  ],
+};
+
+function Investments() {
+  const [coins, setCoins] = useCoins();
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const [weekCount, setWeekCount] = useState(defaultState.weekCount);
+  const [helperMessage, setHelperMessage] = useState(defaultState.helperMessage);
+  const [portfolio, setPortfolio] = useState(defaultState.portfolio);
+  const [weeklyResults, setWeeklyResults] = useState(defaultState.weeklyResults);
 
   const investments = [
     {
       id: "savingsNest",
-      name: "Savings Nest",
+      name: "Nest",
       emoji: "🪺",
-      risk: "Low",
-      description: "A cozy place for your coins to grow slowly and safely.",
-      tip: "Safe choices usually grow slowly and steadily.",
+      mood: "Calm",
+      risk: "Safe",
+      colorClass: "safe-card",
+      tip: "Slow and steady!",
     },
     {
       id: "petBakery",
-      name: "Pet Bakery",
+      name: "Bakery",
       emoji: "🧁",
-      risk: "Medium",
-      description: "Some weeks are busy, some are slower, but it can grow nicely.",
-      tip: "Balanced choices can have ups and downs.",
+      mood: "Bouncy",
+      risk: "Mix",
+      colorClass: "mix-card",
+      tip: "Some up, some down!",
     },
     {
       id: "toyRocketLab",
-      name: "Toy Rocket Lab",
+      name: "Rocket",
       emoji: "🚀",
-      risk: "High",
-      description: "Big wins are possible, but some weeks can be rough.",
-      tip: "Risky choices can win big or lose big.",
+      mood: "Wild",
+      risk: "Risky",
+      colorClass: "risky-card",
+      tip: "Big jumps can happen!",
     },
   ];
 
-  const investedCoins = portfolio.savingsNest + portfolio.petBakery + portfolio.toyRocketLab;
-  const coinsNeeded = Math.max(goalAmount - goalProgress, 0);
-  const progressPercent = Math.min((goalProgress / goalAmount) * 100, 100);
+  useEffect(() => {
+    const saved = localStorage.getItem(INVESTMENTS_STORAGE_KEY);
 
-  const rank = useMemo(() => {
-    if (goalProgress >= 300) return "Pet Investor Pro";
-    if (goalProgress >= 220) return "Future Builder";
-    if (goalProgress >= 150) return "Smart Saver";
-    return "Coin Starter";
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+
+        setWeekCount(
+          typeof parsed.weekCount === "number"
+            ? parsed.weekCount
+            : defaultState.weekCount
+        );
+
+        setHelperMessage(
+          parsed.helperMessage || defaultState.helperMessage
+        );
+
+        setPortfolio({
+          savingsNest: Number(parsed?.portfolio?.savingsNest || 0),
+          petBakery: Number(parsed?.portfolio?.petBakery || 0),
+          toyRocketLab: Number(parsed?.portfolio?.toyRocketLab || 0),
+        });
+
+        setWeeklyResults(
+          Array.isArray(parsed.weeklyResults) && parsed.weeklyResults.length > 0
+            ? parsed.weeklyResults
+            : defaultState.weeklyResults
+        );
+      } catch (error) {
+        console.error("Could not load investment progress:", error);
+      }
+    }
+
+    setHasLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+
+    const stateToSave = {
+      weekCount,
+      helperMessage,
+      portfolio,
+      weeklyResults,
+    };
+
+    localStorage.setItem(
+      INVESTMENTS_STORAGE_KEY,
+      JSON.stringify(stateToSave)
+    );
+  }, [hasLoaded, weekCount, helperMessage, portfolio, weeklyResults]);
+
+  const investedCoins =
+    portfolio.savingsNest + portfolio.petBakery + portfolio.toyRocketLab;
+
+  const goalProgress = investedCoins;
+  const progressPercent = Math.min((goalProgress / GOAL_AMOUNT) * 100, 100);
+  const coinsNeeded = Math.max(GOAL_AMOUNT - goalProgress, 0);
+
+  const starsFilled = useMemo(() => {
+    if (goalProgress >= 300) return 5;
+    if (goalProgress >= 240) return 4;
+    if (goalProgress >= 180) return 3;
+    if (goalProgress >= 120) return 2;
+    if (goalProgress >= 60) return 1;
+    return 0;
   }, [goalProgress]);
 
-  const addLogMessage = (message) => {
-    setActivityLog((prev) => [message, ...prev.slice(0, 5)]);
-  };
+  const rank = useMemo(() => {
+    if (goalProgress >= 300) return "Dream Builder";
+    if (goalProgress >= 220) return "Coin Champ";
+    if (goalProgress >= 150) return "Smart Saver";
+    return "Starter";
+  }, [goalProgress]);
 
   const investCoins = (investmentId, investmentName, tip) => {
-    const amountToInvest = 20;
-
-    if (coins < amountToInvest) {
-      setHelperMessage("Penny says: Oops! You do not have enough coins to invest right now.");
-      addLogMessage(`You tried to invest in ${investmentName}, but you did not have enough coins.`);
+    if (coins < INVEST_AMOUNT) {
+      setHelperMessage("Not enough coins!");
       return;
     }
 
-    setCoins((prev) => prev - amountToInvest);
+    setCoins((prev) => prev - INVEST_AMOUNT);
+
     setPortfolio((prev) => ({
       ...prev,
-      [investmentId]: prev[investmentId] + amountToInvest,
+      [investmentId]: prev[investmentId] + INVEST_AMOUNT,
     }));
 
-    setHelperMessage(`Penny says: Great choice! ${tip}`);
-    addLogMessage(`You invested 20 coins in ${investmentName}.`);
+    setHelperMessage(`${investmentName} time! ${tip}`);
   };
 
   const getWeeklyReturn = (investmentId) => {
@@ -104,156 +172,166 @@ function Investments() {
     const activeInvestments = investments.filter((item) => portfolio[item.id] > 0);
 
     if (activeInvestments.length === 0) {
-      setHelperMessage("Penny says: Try investing in one of the cards first!");
-      addLogMessage("No investments were active this week.");
+      setHelperMessage("Pick a card first!");
+      setWeeklyResults([
+        { name: "Oops", value: "+0", mood: "neutral", emoji: "👀" },
+      ]);
       return;
     }
 
-    let totalWeeklyChange = 0;
-    const weeklyMessages = [];
+    const updatedPortfolio = { ...portfolio };
 
-    activeInvestments.forEach((item) => {
+    const newResults = activeInvestments.map((item) => {
       const result = getWeeklyReturn(item.id);
-      totalWeeklyChange += result;
+      const nextValue = Math.max(updatedPortfolio[item.id] + result, 0);
+      updatedPortfolio[item.id] = nextValue;
 
-      if (result >= 0) {
-        weeklyMessages.push(`${item.name} grew by +${result} coins this week.`);
-      } else {
-        weeklyMessages.push(`${item.name} lost ${result} coins this week.`);
-      }
+      return {
+        name: item.name,
+        value: result >= 0 ? `+${result}` : `${result}`,
+        mood: result > 0 ? "good" : result < 0 ? "bad" : "neutral",
+        emoji: item.emoji,
+      };
     });
 
-    const updatedGoalProgress = Math.max(goalProgress + totalWeeklyChange, 0);
+    setPortfolio(updatedPortfolio);
+    setWeeklyResults(newResults);
+    setWeekCount((prev) => prev + 1);
 
-    setGoalProgress(updatedGoalProgress);
+    const totalAfterWeek =
+      updatedPortfolio.savingsNest +
+      updatedPortfolio.petBakery +
+      updatedPortfolio.toyRocketLab;
 
-    if (totalWeeklyChange > 0) {
-      setHelperMessage("Penny says: Nice job! Your coins grew this week!");
-    } else if (totalWeeklyChange < 0) {
-      setHelperMessage("Penny says: That happens sometimes. Investing can go up and down!");
+    const totalChange = newResults.reduce((sum, item) => {
+      return sum + Number(item.value);
+    }, 0);
+
+    if (totalAfterWeek >= GOAL_AMOUNT) {
+      setHelperMessage("You built the dream home!");
+    } else if (totalChange > 0) {
+      setHelperMessage("Your coins grew!");
+    } else if (totalChange < 0) {
+      setHelperMessage("Some weeks wobble!");
     } else {
-      setHelperMessage("Penny says: This week was steady. Keep going!");
-    }
-
-    weeklyMessages.forEach((message) => addLogMessage(message));
-
-    if (updatedGoalProgress >= goalAmount) {
-      setHelperMessage("Penny says: Amazing work! You reached your pet goal!");
-      addLogMessage("You unlocked the Rainbow Pet House goal! 🎉");
+      setHelperMessage("This week stayed the same!");
     }
   };
 
   return (
     <div className="invest-page">
-      <div className="invest-hero">
-        <div className="invest-hero-text">
-          <h1>Pet Future Fund</h1>
-          <p>
-            Help your pet’s future grow by making smart money choices!
-          </p>
-          <div className="invest-description">
-            Investing means using some of your coins now so they may grow later.
-            Some choices are safer, and some are riskier.
+      <div className="invest-shell">
+        <div className="invest-top-banner">
+          <div className="banner-left">
+            <div className="banner-badge">Week {weekCount}</div>
+            <h1>Pet Coin Garden</h1>
+            <p className="banner-subtitle">Grow coins. Build dreams.</p>
           </div>
         </div>
 
-        <div className="invest-mascot-card">
-          <div className="invest-mascot">🐶</div>
-          <p>{helperMessage}</p>
-        </div>
-      </div>
-
-      <div className="invest-main-grid">
-        <div className="invest-summary-card">
-          <h2>My Pet Goal</h2>
-          <div className="summary-item">
-            <span className="summary-label">Goal</span>
-            <span className="summary-value">Rainbow Pet House 🌈</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-label">Available Coins</span>
-            <span className="summary-value">{coins} 🪙</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-label">Invested Coins</span>
-            <span className="summary-value">{investedCoins} 🏦</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-label">Coins Needed</span>
-            <span className="summary-value">{coinsNeeded} 🎯</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-label">Investor Rank</span>
-            <span className="summary-value">{rank}</span>
+        <div className="goal-card">
+          <div className="goal-visual">
+            <div className="pet-home">🏡</div>
+            <div className="pet-row">🐶 🐱 🐰</div>
           </div>
 
-          <div className="goal-progress-wrapper">
-            <div className="goal-progress-label">
-              <span>Goal Progress</span>
-              <span>
-                {goalProgress} / {goalAmount}
-              </span>
+          <div className="goal-info">
+            <div className="goal-title-row">
+              <h2>Dream Pet Home</h2>
+              <span className="goal-rank">{rank}</span>
             </div>
+
+            <div className="star-row">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={star <= starsFilled ? "star filled" : "star"}
+                >
+                  ⭐
+                </span>
+              ))}
+            </div>
+
+            <div className="goal-progress-text">
+              <span>{goalProgress} / {GOAL_AMOUNT}</span>
+              <span>{coinsNeeded} left</span>
+            </div>
+
             <div className="goal-progress-bar">
               <div
                 className="goal-progress-fill"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
+
+            <div className="goal-mini-stats">
+              <div className="mini-stat">
+                <span className="mini-icon">📦</span>
+                <span>{investedCoins} invested</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mascot-box">
+            <div className="mascot-face">🐶</div>
+            <div className="mascot-speech">{helperMessage}</div>
           </div>
         </div>
 
+        <div className="invest-section-label">Choose a coin place</div>
+
         <div className="invest-cards-area">
           {investments.map((item) => (
-            <div
-              key={item.id}
-              className={`investment-card ${item.id}`}
-            >
-              <div className="investment-top">
+            <div key={item.id} className={`investment-card ${item.colorClass}`}>
+              <div className="investment-scene">
                 <div className="investment-emoji">{item.emoji}</div>
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                </div>
               </div>
 
-              <div className="investment-meta">
-                <span className={`risk-badge ${item.risk.toLowerCase()}`}>
-                  {item.risk} Risk
-                </span>
-                <span className="invested-badge">
-                  Invested: {portfolio[item.id]} 🪙
-                </span>
+              <div className="investment-name">{item.name}</div>
+
+              <div className="investment-tags">
+                <span className="tag-pill">{item.risk}</span>
+                <span className="tag-pill">{item.mood}</span>
               </div>
+
+              <div className="investment-coins">🪙 {portfolio[item.id]}</div>
 
               <button
                 className="invest-btn"
                 onClick={() => investCoins(item.id, item.name, item.tip)}
               >
-                Invest 20 Coins
+                +20
               </button>
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="invest-bottom-grid">
-        <div className="week-card">
-          <h2>Advance Time</h2>
-          <p>
-            Click below to see how your investments do this week.
-          </p>
+        <div className="week-action-card">
+          <div className="week-action-left">
+            <div className="action-emoji">⏭️</div>
+            <div>
+              <h3>Next Week</h3>
+              <p>See what happened!</p>
+            </div>
+          </div>
+
           <button className="advance-btn" onClick={advanceWeek}>
-            Advance 1 Week ⏭️
+            Go
           </button>
         </div>
 
-        <div className="updates-card">
-          <h2>Investment Updates</h2>
-          <div className="updates-list">
-            {activityLog.map((item, index) => (
-              <div key={index} className="update-item">
-                {item}
+        <div className="results-panel">
+          <div className="results-header">
+            <h3>This Week</h3>
+            <span className="results-small">Tiny wins and wobbles</span>
+          </div>
+
+          <div className="results-grid">
+            {weeklyResults.map((item, index) => (
+              <div key={index} className={`result-card ${item.mood}`}>
+                <div className="result-emoji">{item.emoji}</div>
+                <div className="result-name">{item.name}</div>
+                <div className="result-value">{item.value}</div>
               </div>
             ))}
           </div>

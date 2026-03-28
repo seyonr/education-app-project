@@ -215,16 +215,13 @@ function HomePage() {
           <span className="coming-soon-badge">Work in Progress</span>
         </button>
 
-        <button
-          className="action-btn action-btn-disabled"
-          disabled
-          aria-disabled="true"
-          title="Work in progress"
-        >
-          <span>📈</span>
-          <span>Invest</span>
-          <span className="coming-soon-badge">Work in Progress</span>
-        </button>
+<button
+  className="action-btn yellow"
+  onClick={() => navigate("/investments")}
+>
+  <span>📈</span>
+  <span>Invest</span>
+</button>
       </div>
     </div>
   );
