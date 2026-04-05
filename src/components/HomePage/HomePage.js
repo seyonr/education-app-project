@@ -205,14 +205,13 @@ function HomePage() {
         </button>
 
         <button
-          className="action-btn action-btn-disabled"
-          disabled
+          className="action-btn pink"
+          onClick={() => navigate(`/pet-shop`)}
           aria-disabled="true"
-          title="Work in progress"
         >
           <span>🎁</span>
           <span>Pet Shop</span>
-          <span className="coming-soon-badge">Work in Progress</span>
+          {/* <span className="coming-soon-badge">Work in Progress</span> */}
         </button>
 
 <button
