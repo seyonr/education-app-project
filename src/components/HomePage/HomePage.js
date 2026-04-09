@@ -216,7 +216,8 @@ function HomePage() {
 
 <button
   className="action-btn yellow"
-  onClick={() => navigate("/investments")}
+  // onClick={() => navigate("/investments")}
+  onClick={() => navigate(`/simulator`)}
 >
   <span>📈</span>
   <span>Invest</span>

@@ -147,8 +147,8 @@ function App() {
         {/* Other */}
         <Route path="/pet-shop" element={<PetShopPage />}/>
         <Route path="/investments" element={<Investments />} />
-        <Route path="/simulation/:grade/:gameId" element={<SimulatorGame />} />
-
+        {/* <Route path="/simulator/:gameId" element={<SimulatorGame />} /> */}
+        <Route path="/simulator" element={<SimulatorGame />} />
       </Routes>
 
       {/* 🐰 Global floating pet mascot — shows on ALL pages */}
