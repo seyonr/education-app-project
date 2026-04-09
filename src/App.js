@@ -68,11 +68,12 @@
 
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from "react";
 
 import HomePage from './components/HomePage/HomePage';
-import PetShop from './components/PetShop/PetShop';
+import PetShopPage from './components/PetShopPage';
+import PetMascot from './components/PetMascot';
 import GradeSelect from "./components/GradeSelect/GradeSelect";
 import Units from "./components/Units/Units";
 import LessonList from "./components/LessonList/LessonList";
@@ -144,13 +145,55 @@ function App() {
         <Route path="/assessment/:grade/:unit/results" element={<AssessmentResults />} />
 
         {/* Other */}
-        <Route path="/pet-shop" element={<PetShop/>}/>
+        <Route path="/pet-shop" element={<PetShopPage />}/>
         <Route path="/investments" element={<Investments />} />
         <Route path="/simulation/:grade/:gameId" element={<SimulatorGame />} />
 
       </Routes>
 
+      {/* 🐰 Global floating pet mascot — shows on ALL pages */}
+      <PetMascotWrapper />
+
     </Router>
+  );
+}
+
+// Wrapper to access useLocation inside Router
+function PetMascotWrapper() {
+  const location = useLocation();
+  
+  // Parse page type and IDs from URL
+  let pageType = "";
+  let lessonId = "";
+  let quizId = "";
+
+  if (location.pathname.includes("/lesson/lessons/")) {
+    pageType = "lesson";
+    const parts = location.pathname.split("/");
+    lessonId = parts[parts.length - 1]; // Extract lessonId from URL
+  } else if (location.pathname.includes("/lessonIntro/")) {
+    pageType = "lesson";
+    const parts = location.pathname.split("/");
+    lessonId = parts[parts.length - 1];
+  } else if (location.pathname.includes("/lessons/")) {
+    pageType = "lesson";
+    const parts = location.pathname.split("/");
+    lessonId = parts[parts.length - 1];
+  } else if (location.pathname.includes("/assessment/") && !location.pathname.includes("/assessments/")) {
+    pageType = "quiz";
+    const parts = location.pathname.split("/");
+    quizId = parts[parts.length - 2]; // Extract unit/quiz ID
+  } else if (location.pathname.includes("/pet-shop")) {
+    pageType = "shop";
+  }
+
+  return (
+    <PetMascot
+      currentPath={location.pathname}
+      pageType={pageType}
+      lessonId={lessonId}
+      quizId={quizId}
+    />
   );
 }
 

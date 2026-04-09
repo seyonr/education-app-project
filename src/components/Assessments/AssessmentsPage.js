@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import assessmentsData from "../../data/assessments";
 import lessonsData from "../../data/lessons";
-import petImage from "../../assets/images/pet.png";
 import "./Assessments.css";
 
 function AssessmentsPage() {
@@ -104,14 +103,6 @@ function AssessmentsPage() {
         </div>
       </div>
 
-      <div className="pet-floating-container pet-wip">
-        <div className="pet-wip-label">Pet Helper - Work in Progress</div>
-        <div className="pet-floating-character pet-disabled" aria-label="Pet mascot work in progress">
-          <img className="pet-floating-image" src={petImage} alt="Pet mascot" />
-          <span className="pet-ground-shadow" aria-hidden="true" />
-          <span className="pet-sparkle" aria-hidden="true" />
-        </div>
-      </div>
     </div>
   );
 }
