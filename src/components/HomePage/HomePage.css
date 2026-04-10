@@ -55,7 +55,7 @@
   max-width: 700px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px;
+  gap: 30px;
 }
 
 .action-btn {
@@ -75,7 +75,7 @@
   cursor: pointer;
   border: none;
 
-  animation: buttonFloat 3s ease-in-out infinite;
+  /* animation: buttonFloat 3s ease-in-out infinite; */
   transition: all 0.2s ease;
 }
 

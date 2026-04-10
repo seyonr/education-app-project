@@ -132,11 +132,11 @@ function StatBar({ label, emoji, value, color }) {
           alignItems: "center",
         }}
       >
-        <span style={{ fontSize: "14px", fontWeight: "600", color: "#374151" }}>
+        <span style={{ fontSize: "15px", fontWeight: "600", color: "#374151" }}>
           {emoji} {label}
         </span>
         <span
-          style={{ fontSize: "13px", fontWeight: "700", color }}
+          style={{ fontSize: "15px", fontWeight: "700", color }}
         >{`${Math.round(value)}%`}</span>
       </div>
       <div
@@ -321,7 +321,7 @@ export default function PetShopPage() {
           <div>
             <h1
               style={{
-                fontSize: "28px",
+                fontSize: "30px",
                 fontWeight: "800",
                 color: "#1F2937",
                 margin: 0,
@@ -329,7 +329,7 @@ export default function PetShopPage() {
             >
               🏪 Pet Shop
             </h1>
-            <p style={{ color: "#6B7280", margin: "4px 0 0", fontSize: "14px" }}>
+            <p style={{ color: "#6B7280", margin: "4px 0 0", fontSize: "20px" }}>
               Buy items and take care of your pet!
             </p>
           </div>
@@ -351,7 +351,7 @@ export default function PetShopPage() {
               {coins}
             </span>
             <span
-              style={{ fontSize: "13px", fontWeight: "700", color: "rgba(255,255,255,0.85)" }}
+              style={{ fontSize: "15px", fontWeight: "700", color: "rgba(255,255,255,0.85)" }}
             >
               Coins
             </span>
@@ -384,7 +384,8 @@ export default function PetShopPage() {
               <div
                 className={caring ? "pet-wiggle" : "pet-float"}
                 style={{
-                  display: "inline-block",
+                  // display: "inline-block",
+                  display: "flex",
                   background:
                     mood === "happy"
                       ? "linear-gradient(135deg, #D1FAE5, #A7F3D0)"
@@ -407,7 +408,7 @@ export default function PetShopPage() {
               </div>
               <div
                 style={{
-                  fontSize: "20px",
+                  fontSize: "25px",
                   fontWeight: "800",
                   color: "#1F2937",
                 }}
@@ -436,7 +437,7 @@ export default function PetShopPage() {
                       : "#5B21B6",
                   padding: "4px 14px",
                   borderRadius: "999px",
-                  fontSize: "12px",
+                  fontSize: "15px",
                   fontWeight: "700",
                 }}
               >
@@ -448,7 +449,7 @@ export default function PetShopPage() {
             <div style={{ marginBottom: "20px" }}>
               <h3
                 style={{
-                  fontSize: "15px",
+                  fontSize: "18px",
                   fontWeight: "800",
                   color: "#374151",
                   marginBottom: "16px",
@@ -499,7 +500,7 @@ export default function PetShopPage() {
                       border: `1.5px solid ${hasItem ? action.color : "#E5E7EB"}`,
                       borderRadius: "14px",
                       padding: "12px",
-                      fontSize: "14px",
+                      fontSize: "17px",
                       fontWeight: "700",
                       cursor: hasItem && caring !== action.id ? "pointer" : "not-allowed",
                       transition: "all 0.2s ease",
@@ -507,7 +508,7 @@ export default function PetShopPage() {
                   >
                     <div>{action.emoji}</div>
                     <div style={{ marginTop: "2px" }}>{action.label}</div>
-                    <div style={{ fontSize: "11px", marginTop: "2px", opacity: 0.7 }}>
+                    <div style={{ fontSize: "14px", marginTop: "2px", opacity: 0.7 }}>
                       {petState.bag[action.item] || 0}/1
                     </div>
                   </button>
@@ -530,7 +531,7 @@ export default function PetShopPage() {
             >
               <h2
                 style={{
-                  fontSize: "17px",
+                  fontSize: "20px",
                   fontWeight: "800",
                   color: "#1F2937",
                   margin: "0 0 16px",
@@ -559,7 +560,7 @@ export default function PetShopPage() {
                     <div style={{ fontSize: "24px" }}>{item.emoji}</div>
                     <div
                       style={{
-                        fontSize: "11px",
+                        fontSize: "18px",
                         fontWeight: "700",
                         color: "#6B7280",
                         marginTop: "2px",
@@ -569,7 +570,7 @@ export default function PetShopPage() {
                     </div>
                     <div
                       style={{
-                        fontSize: "20px",
+                        fontSize: "18px",
                         fontWeight: "800",
                         color: item.color,
                         lineHeight: 1,
@@ -596,7 +597,7 @@ export default function PetShopPage() {
             >
               <h2
                 style={{
-                  fontSize: "17px",
+                  fontSize: "20px",
                   fontWeight: "800",
                   color: "#1F2937",
                   margin: "0 0 16px",
@@ -626,7 +627,7 @@ export default function PetShopPage() {
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
-                          fontSize: "15px",
+                          fontSize: "20px",
                           fontWeight: "800",
                           color: "#1F2937",
                         }}
@@ -635,7 +636,7 @@ export default function PetShopPage() {
                       </div>
                       <div
                         style={{
-                          fontSize: "12px",
+                          fontSize: "15px",
                           color: item.color,
                           fontWeight: "600",
                         }}
@@ -650,10 +651,10 @@ export default function PetShopPage() {
                           marginTop: "4px",
                         }}
                       >
-                        <span style={{ fontSize: "14px" }}>🪙</span>
+                        <span style={{ fontSize: "15px" }}>🪙</span>
                         <span
                           style={{
-                            fontSize: "14px",
+                            fontSize: "15px",
                             fontWeight: "800",
                             color: "#F59E0B",
                           }}
@@ -661,7 +662,7 @@ export default function PetShopPage() {
                           {item.cost}
                         </span>
                         <span
-                          style={{ fontSize: "11px", color: "#9CA3AF", marginLeft: "2px" }}
+                          style={{ fontSize: "15px", color: "#9CA3AF", marginLeft: "2px" }}
                         >
                           coins
                         </span>

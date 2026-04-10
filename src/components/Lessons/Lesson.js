@@ -2671,7 +2671,7 @@ function Lesson() {
                         {!isOpen ? (
                           <>
                             <div className="clue-cover-emoji">{card.coverEmoji || "🃏"}</div>
-                            <div className="clue-cover-text">Tap</div>
+                            <div className="clue-cover-text">Tap for more hints!</div>
                           </>
                         ) : (
                           <>
