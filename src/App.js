@@ -138,13 +138,13 @@ function AccessibilityPanel({
         {contrastMode ? "✅" : "🎯"} Contrast Mode
       </button>
 
-      <button
+      {/* <button
         className={`accessibility-btn ${largeText ? "active" : ""}`}
         onClick={() => setLargeText(!largeText)}
         aria-pressed={largeText}
       >
         {largeText ? "✅" : "🔎"} Larger Text
-      </button>
+      </button> */}
     </div>
   );
 }
