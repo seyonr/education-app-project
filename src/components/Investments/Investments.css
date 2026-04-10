@@ -445,3 +445,43 @@
     width: 100%;
   }
 }
+
+/* accessibility theme support */
+body.theme-dark .invest-page,
+body.theme-contrast .invest-page {
+  background: transparent;
+  color: var(--page-text);
+  font-family: var(--body-font);
+}
+
+body.theme-dark .banner-left h1,
+body.theme-dark .banner-subtitle,
+body.theme-dark .goal-title-row h2,
+body.theme-dark .goal-progress-text,
+body.theme-dark .result-name,
+body.theme-dark .result-value,
+body.theme-contrast .banner-left h1,
+body.theme-contrast .banner-subtitle,
+body.theme-contrast .goal-title-row h2,
+body.theme-contrast .goal-progress-text,
+body.theme-contrast .result-name,
+body.theme-contrast .result-value {
+  color: var(--page-text);
+}
+
+body.theme-dark .goal-card,
+body.theme-contrast .goal-card,
+body.theme-dark .banner-badge,
+body.theme-contrast .banner-badge,
+body.theme-dark .week-action-card,
+body.theme-contrast .week-action-card,
+body.theme-dark .result-card,
+body.theme-contrast .result-card,
+body.theme-dark .mascot-box,
+body.theme-contrast .mascot-box {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+

@@ -151,3 +151,23 @@
   50% { transform: translateY(-20px); }
   100% { transform: translateY(0); }
 }
+
+/* accessibility theme support */
+body.theme-dark .units-header h1,
+body.theme-dark .units-header p,
+body.theme-contrast .units-header h1,
+body.theme-contrast .units-header p {
+  color: var(--page-text);
+}
+
+
+body.theme-contrast .unit-card {
+  background: var(--card-bg);
+  color: var(--page-text);
+  border-color: var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+body.theme-dark .units-badge{
+  color: black;
+}
+

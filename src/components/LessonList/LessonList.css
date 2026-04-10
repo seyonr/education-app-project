@@ -169,3 +169,70 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+
+/* accessibility theme support */
+body.theme-dark .lesson-header h1,
+body.theme-dark .lesson-header p,
+body.theme-contrast .lesson-header h1,
+body.theme-contrast .lesson-header p,
+body.theme-dark .progress-text,
+body.theme-contrast .progress-text {
+  color: var(--page-text);
+}
+
+body.theme-dark .lesson-card-simple,
+body.theme-contrast .lesson-card-simple {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+
+
+
+/* =========================
+   DARK MODE FIXES - LESSON LIST
+   ========================= */
+
+body.theme-dark .lesson-page-simple {
+  color: #f8fafc;
+}
+
+body.theme-dark .lesson-header h1,
+body.theme-dark .lesson-header p,
+body.theme-dark .progress-text,
+body.theme-dark .lesson-card-simple .lesson-title,
+body.theme-dark .lesson-status {
+  color: #f8fafc;
+}
+
+body.theme-dark .lesson-card-simple {
+  background: rgba(30, 41, 59, 0.94);
+  border: 2px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.theme-dark .lesson-card-simple.done {
+  background: linear-gradient(180deg, #1f3a2e 0%, #244437 100%);
+}
+
+body.theme-dark .lesson-complete-box {
+  background: linear-gradient(180deg, #fff1b8 0%, #f7e7a0 100%);
+  color: #2f2410;
+  border: 2px solid #f4c542;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+body.theme-dark .start-quiz-btn {
+  background: linear-gradient(180deg, #4ade80 0%, #34d399 100%);
+  color: #102033;
+  box-shadow: 0 8px 18px rgba(52, 211, 153, 0.22);
+}
+
+body.theme-dark .lesson-reward-badge {
+  color: #4b3b00;
+}
+
+body.theme-dark .lesson-badge {
+  color: #2f2410;
+}

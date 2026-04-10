@@ -211,3 +211,28 @@
         width: 110px;
     }
 }
+
+/* accessibility theme support */
+body.theme-dark .lesson-title,
+body.theme-dark .drag-prompt,
+body.theme-dark .drag-scenario-title,
+body.theme-dark .drag-scenario-text,
+body.theme-contrast .lesson-title,
+body.theme-contrast .drag-prompt,
+body.theme-contrast .drag-scenario-title,
+body.theme-contrast .drag-scenario-text {
+    color: var(--page-text);
+}
+
+body.theme-dark .drag-scenario-box,
+body.theme-contrast .drag-scenario-box,
+body.theme-dark .drop-zone,
+body.theme-contrast .drop-zone,
+body.theme-dark .drag-item-card,
+body.theme-contrast .drag-item-card {
+    background: var(--card-bg);
+    color: var(--page-text);
+    border-color: var(--soft-outline);
+    box-shadow: var(--card-shadow);
+}
+

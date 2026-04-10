@@ -1281,3 +1281,145 @@
     background: #f3f4f6;
     transform: none;
 }
+
+/* accessibility theme support */
+body.theme-dark .assessment-subtitle,
+/* body.theme-dark .assessment-result-row, */
+body.theme-dark .assessment-result-feedback,
+body.theme-contrast .assessment-subtitle,
+body.theme-contrast .assessment-result-row,
+body.theme-contrast .assessment-result-feedback {
+  color: var(--muted-text);
+}
+
+body.theme-dark .assessment-card,
+body.theme-contrast .assessment-card,
+body.theme-dark .assessment-question-card,
+body.theme-contrast .assessment-question-card,
+body.theme-dark .result-card,
+body.theme-contrast .result-card,
+body.theme-dark .pet-message,
+body.theme-contrast .pet-message {
+  background: var(--card-bg);
+  color: var(--page-text);
+  border-color: var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+
+body.theme-dark .assessment-subtitle{
+  color: black;
+}
+
+/* =========================
+   FINAL FIX - DRAG & DROP READABILITY
+   keep text dark on light cards
+   ========================= */
+
+body.theme-dark .assessment-question-card {
+  background: #fffaf2;
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-question,
+body.theme-dark .assessment-side-text,
+body.theme-dark .assessment-drop-title,
+body.theme-dark .assessment-drag-label,
+body.theme-dark .assessment-matching-left,
+body.theme-dark .assessment-option-label,
+body.theme-dark .assessment-option-subtitle,
+body.theme-dark .assessment-feedback-title,
+body.theme-dark .assessment-feedback-text {
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-drag-bank {
+  background: #fffdf7;
+  border: 1px dashed rgba(244, 205, 141, 0.85);
+}
+
+body.theme-dark .assessment-drag-item {
+  background: #ffffff;
+  border: 2px solid #f1e4c8;
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-drop-zone {
+  background: #fffaf2;
+  border: 2px dashed #d8c7f7;
+}
+
+body.theme-dark .assessment-drop-item {
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-matching-row {
+  background: linear-gradient(135deg, #fff7e6, #ffffff);
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-matching-select {
+  background: #eef2ff;
+  color: #0f172a;
+}
+
+body.theme-dark .assessment-feedback {
+  background: #fff3e1;
+  border: 2px solid #fcd8a8;
+}
+
+
+/* =========================
+   FINAL FIX - RESULTS PAGE READABILITY
+   keep result text dark on light cards
+   ========================= */
+
+body.theme-dark .result-simple,
+body.theme-dark .result-history,
+body.theme-dark .result-question-card,
+body.theme-dark .assessment-results .assessment-feedback,
+body.theme-dark .assessment-results .assessment-matching-row {
+  color: #0f172a;
+}
+
+body.theme-dark .result-title,
+body.theme-dark .result-subtitle,
+body.theme-dark .result-score-main,
+body.theme-dark .result-score-sub,
+body.theme-dark .result-history-title,
+body.theme-dark .result-history-item,
+body.theme-dark .assessment-results .assessment-question,
+body.theme-dark .assessment-results .assessment-feedback-title,
+body.theme-dark .assessment-results .assessment-feedback-text,
+body.theme-dark .assessment-results .assessment-matching-left,
+body.theme-dark .assessment-results .assessment-drop-title,
+body.theme-dark .assessment-results .assessment-option-label,
+body.theme-dark .assessment-results .assessment-option-subtitle {
+  color: #0f172a;
+}
+
+body.theme-dark .result-simple,
+body.theme-dark .result-history {
+  background: #ffffff;
+}
+
+body.theme-dark .result-reward-banner {
+  background: linear-gradient(135deg, #fff6d5, #ffffff);
+}
+
+body.theme-dark .assessment-results .assessment-feedback {
+  background: #fff3e1;
+  border-color: #fcd8a8;
+}
+
+body.theme-dark .assessment-results .assessment-matching-row.correct {
+  background: #ecfdf5;
+}
+
+body.theme-dark .assessment-results .assessment-matching-row.incorrect {
+  background: #fef2f2;
+}
+
+
+body.theme-dark .assessment-result-feedback, .assessment-result-row{
+  color: black;
+}

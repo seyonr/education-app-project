@@ -102,3 +102,44 @@
         flex-wrap: wrap;
     }
 }
+
+/* accessibility theme support */
+.navbar {
+    font-family: var(--body-font);
+}
+
+body.theme-dark .navbar,
+body.theme-contrast .navbar {
+    background: var(--card-bg);
+    border-bottom-color: var(--soft-outline);
+    box-shadow: var(--card-shadow);
+}
+
+body.theme-dark .up,
+body.theme-contrast .up,
+body.theme-dark .coins,
+body.theme-contrast .coins,
+body.theme-dark .logout-btn,
+body.theme-contrast .logout-btn {
+    color: var(--button-text);
+}
+
+body.theme-dark .up:hover,
+body.theme-contrast .up:hover {
+    background: rgba(157, 214, 255, 0.22);
+}
+
+body.theme-dark .coins,
+body.theme-contrast .coins {
+    border-color: var(--soft-outline);
+}
+
+body.theme-dark .nav-disabled,
+body.theme-contrast .nav-disabled {
+    border-color: var(--soft-outline);
+}
+
+body.theme-dark .coins{
+    color: black;
+}
+

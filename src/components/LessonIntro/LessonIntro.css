@@ -160,3 +160,80 @@
 .learn-term{
   font-size: 24px;
 }
+
+/* accessibility theme support */
+body.theme-dark .intro-page,
+body.theme-contrast .intro-page {
+  background: transparent;
+}
+
+body.theme-dark .intro-header h1,
+body.theme-contrast .intro-header h1 {
+  color: var(--page-text);
+}
+
+body.theme-dark .learn-box,
+body.theme-contrast .learn-box,
+body.theme-dark .learn-button,
+body.theme-contrast .learn-button,
+body.theme-dark .learn-content,
+body.theme-contrast .learn-content {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+
+
+
+/* =========================
+   DARK MODE FIXES - LESSON INTRO
+   ========================= */
+
+body.theme-dark .intro-page {
+  background: linear-gradient(180deg, #22344d, #1b2f48);
+  color: #f8fafc;
+}
+
+body.theme-dark .intro-header h1 {
+  color: #f8fafc;
+}
+
+body.theme-dark .intro-badge {
+  background: #ffe08a;
+  color: #2f2410;
+}
+
+body.theme-dark .learn-box {
+  background: rgba(30, 41, 59, 0.94);
+  border: 2px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.theme-dark .learn-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .learn-button {
+  background: #f7eec7;
+  color: #233044;
+  border: 2px solid #eadb98;
+}
+
+body.theme-dark .learn-button:hover {
+  background: #fff5cf;
+}
+
+body.theme-dark .learn-content {
+  background: #fff9df;
+  color: #3b2f13;
+  border: 2px solid #f3dd8a;
+}
+
+body.theme-dark .chevron {
+  color: #233044;
+}
+
+body.theme-dark .intro-tip{
+  color: black;
+}

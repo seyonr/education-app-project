@@ -287,3 +287,33 @@
     font-size: 12px !important;
   }
 }
+
+/* accessibility theme support */
+body.theme-dark .coins-display,
+body.theme-contrast .coins-display {
+  color: var(--button-text);
+  border: 2px solid var(--soft-outline);
+}
+
+body.theme-dark .pet-area::before,
+body.theme-contrast .pet-area::before {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+body.theme-dark .top-bar h2,
+body.theme-dark .top-bar p,
+body.theme-contrast .top-bar h2,
+body.theme-contrast .top-bar p {
+  color: var(--page-text);
+}
+
+body.theme-dark .change-grade-btn,
+body.theme-contrast .change-grade-btn {
+  background: var(--card-bg);
+  color: var(--button-text);
+  border: 2px solid var(--soft-outline);
+}
+
+body.theme-dark .coins-display{
+  color: black;
+}

@@ -121,7 +121,7 @@ function saveState(state) {
   localStorage.setItem("pennyPals_pet", JSON.stringify(state));
 }
 
-function StatBar({ label, emoji, value, color }) {
+function StatBar({ label, emoji, value, color, darkMode }) {
   return (
     <div style={{ marginBottom: "14px" }}>
       <div
@@ -132,17 +132,23 @@ function StatBar({ label, emoji, value, color }) {
           alignItems: "center",
         }}
       >
-        <span style={{ fontSize: "15px", fontWeight: "600", color: "#374151" }}>
+        <span
+          style={{
+            fontSize: "15px",
+            fontWeight: "600",
+            color: darkMode ? "#F8FAFC" : "#374151",
+          }}
+        >
           {emoji} {label}
         </span>
-        <span
-          style={{ fontSize: "15px", fontWeight: "700", color }}
-        >{`${Math.round(value)}%`}</span>
+        <span style={{ fontSize: "15px", fontWeight: "700", color }}>
+          {`${Math.round(value)}%`}
+        </span>
       </div>
       <div
         style={{
           height: "12px",
-          background: "#F3F4F6",
+          background: darkMode ? "rgba(255,255,255,0.12)" : "#F3F4F6",
           borderRadius: "999px",
           overflow: "hidden",
         }}
@@ -161,7 +167,7 @@ function StatBar({ label, emoji, value, color }) {
   );
 }
 
-function Toast({ msg, onDone }) {
+function Toast({ msg, onDone, darkMode }) {
   useEffect(() => {
     const t = setTimeout(onDone, 2200);
     return () => clearTimeout(t);
@@ -174,7 +180,7 @@ function Toast({ msg, onDone }) {
         top: "80px",
         left: "50%",
         transform: "translateX(-50%)",
-        background: "#1F2937",
+        background: darkMode ? "#0F172A" : "#1F2937",
         color: "white",
         padding: "12px 24px",
         borderRadius: "999px",
@@ -191,7 +197,7 @@ function Toast({ msg, onDone }) {
   );
 }
 
-export default function PetShopPage() {
+export default function PetShopPage({ darkMode = false }) {
   const [petState, setPetState] = useState(loadState);
   const [coins, setCoins] = useCoins();
   const [toast, setToast] = useState(null);
@@ -200,6 +206,23 @@ export default function PetShopPage() {
 
   const mood = getMood(petState.stats);
   const petEmoji = PET_EMOJI[mood];
+  // const darkMode =
+  //   typeof document !== "undefined" &&
+  //   document.body.classList.contains("theme-dark");
+
+  const pageBackground = darkMode
+    ? "linear-gradient(135deg, #22344d 0%, #1e3551 50%, #1b2f48 100%)"
+    : "linear-gradient(135deg, #FFF9F0 0%, #F0F7FF 50%, #F5F0FF 100%)";
+
+  const cardBackground = darkMode ? "rgba(30, 41, 59, 0.94)" : "white";
+  const cardBorder = darkMode
+    ? "1px solid rgba(148,163,184,0.24)"
+    : "1px solid rgba(0,0,0,0.05)";
+  const mainText = darkMode ? "#F8FAFC" : "#1F2937";
+  const softText = darkMode ? "#D6E3F1" : "#6B7280";
+  const darkShadow = darkMode
+    ? "0 10px 24px rgba(0,0,0,0.22)"
+    : "0 4px 20px rgba(0,0,0,0.07)";
 
   // Stat decay
   useEffect(() => {
@@ -208,7 +231,6 @@ export default function PetShopPage() {
         const now = Date.now();
         const lastCareAt = prev.lastCareAt || 0;
 
-        // Keep mood stable right after care actions so kids feel rewarded.
         if (now - lastCareAt < 2 * 60 * 1000) {
           return prev;
         }
@@ -254,30 +276,33 @@ export default function PetShopPage() {
     [coins, setCoins]
   );
 
-  const handleCare = useCallback((action) => {
-    if ((petState.bag[action.item] || 0) <= 0) return;
-    setCaring(action.id);
-    setTimeout(() => {
-      setPetState((prev) => {
-        const updated = {
-          ...prev,
-          bag: {
-            ...prev.bag,
-            [action.item]: prev.bag[action.item] - 1,
-          },
-          stats: {
-            ...prev.stats,
-            [action.stat]: clamp(prev.stats[action.stat] + action.boost),
-          },
-          lastCareAt: Date.now(),
-        };
-        saveState(updated);
-        return updated;
-      });
-      showToast(`${action.label} successful! 🎉`);
-      setCaring(null);
-    }, 300);
-  }, [petState.bag]);
+  const handleCare = useCallback(
+    (action) => {
+      if ((petState.bag[action.item] || 0) <= 0) return;
+      setCaring(action.id);
+      setTimeout(() => {
+        setPetState((prev) => {
+          const updated = {
+            ...prev,
+            bag: {
+              ...prev.bag,
+              [action.item]: prev.bag[action.item] - 1,
+            },
+            stats: {
+              ...prev.stats,
+              [action.stat]: clamp(prev.stats[action.stat] + action.boost),
+            },
+            lastCareAt: Date.now(),
+          };
+          saveState(updated);
+          return updated;
+        });
+        showToast(`${action.label} successful! 🎉`);
+        setCaring(null);
+      }, 300);
+    },
+    [petState.bag]
+  );
 
   return (
     <>
@@ -285,30 +310,27 @@ export default function PetShopPage() {
         @keyframes fadeSlide { from { opacity:0; transform: translateX(-50%) translateY(-12px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
         @keyframes petBounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-12px)} 70%{transform:translateY(-4px)} }
         @keyframes petWiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} }
-        @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.18)} 100%{transform:scale(1)} }
         @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
         .pet-float { animation: float 3s ease-in-out infinite; }
         .pet-wiggle { animation: petWiggle 0.4s ease-in-out 3; }
-        .pet-bounce { animation: petBounce 0.5s ease; }
-        .btn-care:hover { filter: brightness(0.96); transform: scale(1.03); }
+        .btn-care:hover { filter: brightness(0.98); transform: scale(1.03); }
         .btn-care:active { transform: scale(0.97); }
-        .btn-buy:hover { filter: brightness(0.95); }
+        .btn-buy:hover { filter: brightness(0.97); }
         .btn-buy:active { transform: scale(0.97); }
         .shop-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
       `}</style>
 
-      {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
+      {toast && <Toast msg={toast} onDone={() => setToast(null)} darkMode={darkMode} />}
 
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #FFF9F0 0%, #F0F7FF 50%, #F5F0FF 100%)",
+          background: pageBackground,
           padding: "32px 16px",
           fontFamily: "'Nunito', 'Segoe UI', sans-serif",
           zoom: "1.15",
         }}
       >
-        {/* Header */}
         <div
           style={{
             maxWidth: "900px",
@@ -323,16 +345,17 @@ export default function PetShopPage() {
               style={{
                 fontSize: "30px",
                 fontWeight: "800",
-                color: "#1F2937",
+                color: mainText,
                 margin: 0,
               }}
             >
               🏪 Pet Shop
             </h1>
-            <p style={{ color: "#6B7280", margin: "4px 0 0", fontSize: "20px" }}>
+            <p style={{ color: softText, margin: "4px 0 0", fontSize: "20px" }}>
               Buy items and take care of your pet!
             </p>
           </div>
+
           <div
             style={{
               background: "linear-gradient(135deg, #FCD34D, #F59E0B)",
@@ -345,20 +368,21 @@ export default function PetShopPage() {
             }}
           >
             <span style={{ fontSize: "20px" }}>🪙</span>
-            <span
-              style={{ fontSize: "20px", fontWeight: "800", color: "white" }}
-            >
+            <span style={{ fontSize: "20px", fontWeight: "800", color: "white" }}>
               {coins}
             </span>
             <span
-              style={{ fontSize: "15px", fontWeight: "700", color: "rgba(255,255,255,0.85)" }}
+              style={{
+                fontSize: "15px",
+                fontWeight: "700",
+                color: "rgba(255,255,255,0.85)",
+              }}
             >
               Coins
             </span>
           </div>
         </div>
 
-        {/* Main Grid */}
         <div
           style={{
             maxWidth: "900px",
@@ -368,23 +392,20 @@ export default function PetShopPage() {
             gap: "20px",
           }}
         >
-          {/* ── Pet Card ── */}
           <div
             style={{
-              background: "white",
+              background: cardBackground,
               borderRadius: "24px",
               padding: "28px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.07)",
-              border: "1px solid rgba(0,0,0,0.05)",
+              boxShadow: darkShadow,
+              border: cardBorder,
               gridColumn: "1",
             }}
           >
-            {/* Pet Avatar */}
             <div style={{ textAlign: "center", marginBottom: "24px" }}>
               <div
                 className={caring ? "pet-wiggle" : "pet-float"}
                 style={{
-                  // display: "inline-block",
                   display: "flex",
                   background:
                     mood === "happy"
@@ -406,15 +427,17 @@ export default function PetShopPage() {
               >
                 {petEmoji}
               </div>
+
               <div
                 style={{
                   fontSize: "25px",
                   fontWeight: "800",
-                  color: "#1F2937",
+                  color: mainText,
                 }}
               >
                 {petState.name}
               </div>
+
               <div
                 style={{
                   display: "inline-block",
@@ -445,40 +468,42 @@ export default function PetShopPage() {
               </div>
             </div>
 
-            {/* Stat Bars */}
             <div style={{ marginBottom: "20px" }}>
               <h3
                 style={{
                   fontSize: "18px",
                   fontWeight: "800",
-                  color: "#374151",
+                  color: mainText,
                   marginBottom: "16px",
                   margin: "0 0 16px",
                 }}
               >
                 Pet Stats
               </h3>
+
               <StatBar
                 label="Health"
                 emoji="❤️"
                 value={petState.stats.health}
                 color="#EF4444"
+                darkMode={darkMode}
               />
               <StatBar
                 label="Water"
                 emoji="💧"
                 value={petState.stats.water}
                 color="#3B82F6"
+                darkMode={darkMode}
               />
               <StatBar
                 label="Happy"
                 emoji="🌈"
                 value={petState.stats.happiness}
                 color="#8B5CF6"
+                darkMode={darkMode}
               />
             </div>
 
-            {/* Care Buttons */}
             <div
               style={{
                 display: "grid",
@@ -495,9 +520,17 @@ export default function PetShopPage() {
                     onClick={() => handleCare(action)}
                     disabled={!hasItem || caring === action.id}
                     style={{
-                      background: hasItem ? action.bg : "#F3F4F6",
-                      color: hasItem ? action.color : "#9CA3AF",
-                      border: `1.5px solid ${hasItem ? action.color : "#E5E7EB"}`,
+                      background: hasItem
+                        ? darkMode
+                          ? `${action.color}22`
+                          : action.bg
+                        : darkMode
+                        ? "rgba(255,255,255,0.06)"
+                        : "#F3F4F6",
+                      color: hasItem ? action.color : darkMode ? "#94A3B8" : "#9CA3AF",
+                      border: `1.5px solid ${
+                        hasItem ? action.color : darkMode ? "rgba(255,255,255,0.12)" : "#E5E7EB"
+                      }`,
                       borderRadius: "14px",
                       padding: "12px",
                       fontSize: "17px",
@@ -517,28 +550,27 @@ export default function PetShopPage() {
             </div>
           </div>
 
-          {/* Right Column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {/* Bag */}
             <div
               style={{
-                background: "white",
+                background: cardBackground,
                 borderRadius: "24px",
                 padding: "24px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.07)",
-                border: "1px solid rgba(0,0,0,0.05)",
+                boxShadow: darkShadow,
+                border: cardBorder,
               }}
             >
               <h2
                 style={{
                   fontSize: "20px",
                   fontWeight: "800",
-                  color: "#1F2937",
+                  color: mainText,
                   margin: "0 0 16px",
                 }}
               >
                 🎒 My Bag
               </h2>
+
               <div
                 style={{
                   display: "grid",
@@ -550,11 +582,11 @@ export default function PetShopPage() {
                   <div
                     key={item.id}
                     style={{
-                      background: item.bg,
+                      background: darkMode ? `${item.color}18` : item.bg,
                       borderRadius: "14px",
                       padding: "12px 8px",
                       textAlign: "center",
-                      border: `1.5px solid ${item.border}`,
+                      border: `1.5px solid ${darkMode ? `${item.color}88` : item.border}`,
                     }}
                   >
                     <div style={{ fontSize: "24px" }}>{item.emoji}</div>
@@ -562,7 +594,7 @@ export default function PetShopPage() {
                       style={{
                         fontSize: "18px",
                         fontWeight: "700",
-                        color: "#6B7280",
+                        color: darkMode ? "#E2E8F0" : "#6B7280",
                         marginTop: "2px",
                       }}
                     >
@@ -584,14 +616,13 @@ export default function PetShopPage() {
               </div>
             </div>
 
-            {/* Shop */}
             <div
               style={{
-                background: "white",
+                background: cardBackground,
                 borderRadius: "24px",
                 padding: "24px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.07)",
-                border: "1px solid rgba(0,0,0,0.05)",
+                boxShadow: darkShadow,
+                border: cardBorder,
                 flex: 1,
               }}
             >
@@ -599,12 +630,13 @@ export default function PetShopPage() {
                 style={{
                   fontSize: "20px",
                   fontWeight: "800",
-                  color: "#1F2937",
+                  color: mainText,
                   margin: "0 0 16px",
                 }}
               >
                 🛒 Shop
               </h2>
+
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {SHOP_ITEMS.map((item) => (
                   <div
@@ -613,10 +645,10 @@ export default function PetShopPage() {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      background: item.bg,
+                      background: darkMode ? `${item.color}18` : item.bg,
                       borderRadius: "16px",
                       padding: "14px 16px",
-                      border: `1.5px solid ${item.border}`,
+                      border: `1.5px solid ${darkMode ? `${item.color}88` : item.border}`,
                       transition: "all 0.2s ease",
                       cursor: "default",
                     }}
@@ -624,16 +656,18 @@ export default function PetShopPage() {
                     <div style={{ fontSize: "32px", marginRight: "14px" }}>
                       {item.emoji}
                     </div>
+
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
                           fontSize: "20px",
                           fontWeight: "800",
-                          color: "#1F2937",
+                          color: mainText,
                         }}
                       >
                         {item.name}
                       </div>
+
                       <div
                         style={{
                           fontSize: "15px",
@@ -643,6 +677,7 @@ export default function PetShopPage() {
                       >
                         {item.description}
                       </div>
+
                       <div
                         style={{
                           display: "flex",
@@ -662,12 +697,17 @@ export default function PetShopPage() {
                           {item.cost}
                         </span>
                         <span
-                          style={{ fontSize: "15px", color: "#9CA3AF", marginLeft: "2px" }}
+                          style={{
+                            fontSize: "15px",
+                            color: darkMode ? "#CBD5E1" : "#9CA3AF",
+                            marginLeft: "2px",
+                          }}
                         >
                           coins
                         </span>
                       </div>
                     </div>
+
                     <button
                       className="btn-buy"
                       onClick={() => handleBuy(item)}
@@ -676,8 +716,10 @@ export default function PetShopPage() {
                         background:
                           coins >= item.cost
                             ? `linear-gradient(135deg, ${item.color}, ${item.color}CC)`
+                            : darkMode
+                            ? "rgba(255,255,255,0.08)"
                             : "#E5E7EB",
-                        color: coins >= item.cost ? "white" : "#9CA3AF",
+                        color: coins >= item.cost ? "white" : darkMode ? "#94A3B8" : "#9CA3AF",
                         border: "none",
                         borderRadius: "12px",
                         padding: "10px 18px",

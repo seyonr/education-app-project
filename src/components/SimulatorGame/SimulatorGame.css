@@ -348,3 +348,101 @@ min-height:140px;
 
 }
 
+/* accessibility theme support */
+body.theme-dark .saving-lesson-container,
+body.theme-contrast .saving-lesson-container {
+    background: transparent;
+}
+
+body.theme-dark .saving-lesson-title,
+body.theme-dark .fun-meter-label,
+body.theme-dark .saving-goal-box p,
+body.theme-dark .saving-popup-title,
+body.theme-dark .saving-popup-text,
+body.theme-contrast .saving-lesson-title,
+body.theme-contrast .fun-meter-label,
+body.theme-contrast .saving-goal-box p,
+body.theme-contrast .saving-popup-title,
+body.theme-contrast .saving-popup-text {
+    color: var(--page-text);
+}
+
+body.theme-dark .fun-meter-mini,
+body.theme-contrast .fun-meter-mini,
+body.theme-dark .saving-goal-box,
+body.theme-contrast .saving-goal-box,
+body.theme-dark .saving-action-card,
+body.theme-contrast .saving-action-card,
+body.theme-dark .saving-popup,
+body.theme-contrast .saving-popup {
+    background: var(--card-bg);
+    color: var(--page-text);
+    border-color: var(--soft-outline);
+    box-shadow: var(--card-shadow);
+}
+
+/* =========================
+   DARK MODE FIXES - SIMULATOR GAME
+   ========================= */
+
+body.theme-dark .saving-lesson-container {
+    background: linear-gradient(180deg, #22344d 0%, #1e3551 100%);
+    color: #f8fafc;
+}
+
+body.theme-dark .saving-lesson-title,
+body.theme-dark .saving-round-text,
+body.theme-dark .meter-header,
+body.theme-dark .saving-action-title,
+body.theme-dark .saving-action-money {
+    color: #f8fafc;
+}
+
+body.theme-dark .fun-meter-mini,
+body.theme-dark .meter-card,
+body.theme-dark .saving-feedback-box,
+body.theme-dark .saving-action-card,
+body.theme-dark .saving-popup-box {
+    background: rgba(30, 41, 59, 0.94);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.theme-dark .saving-goal-box {
+    background: linear-gradient(180deg, #20324b 0%, #1b2a40 100%);
+    border-color: rgba(148, 163, 184, 0.28);
+}
+
+body.theme-dark .saving-goal-box h2,
+body.theme-dark .saving-goal-box p,
+body.theme-dark .saving-feedback-box p,
+body.theme-dark .saving-popup-title,
+body.theme-dark .saving-popup-text {
+    color: #f8fafc;
+}
+
+body.theme-dark .meter-card {
+    border: 2px solid rgba(255, 213, 79, 0.55);
+}
+
+body.theme-dark .saving-feedback-box {
+    background: #f7eec7;
+}
+
+body.theme-dark .saving-feedback-box p {
+    color: #233044;
+}
+
+body.theme-dark .saving-action-card {
+    border: 3px solid rgba(255, 213, 79, 0.8);
+}
+
+body.theme-dark .saving-popup-btn {
+    background: #ffd54f;
+    color: #233044;
+}
+
+body.theme-dark .saving-popup-back-btn {
+    background: #cbd5e1;
+    color: #233044;
+}

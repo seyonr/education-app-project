@@ -274,3 +274,32 @@
     font-size: 14px;
   }
 }
+
+/* accessibility theme support */
+body.theme-dark .grade-select-page,
+body.theme-contrast .grade-select-page {
+  background: transparent;
+}
+
+body.theme-dark .grade-card,
+body.theme-contrast .grade-card {
+  background: var(--card-bg);
+  color: var(--page-text);
+  border-color: var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+
+body.theme-dark .grade-card h1,
+body.theme-dark .grade-question,
+body.theme-dark .grade-note,
+body.theme-contrast .grade-card h1,
+body.theme-contrast .grade-question,
+body.theme-contrast .grade-note {
+  color: var(--page-text);
+}
+
+body.theme-dark .grade-btn,
+body.theme-contrast .grade-btn {
+  border-color: var(--soft-outline);
+}
+
