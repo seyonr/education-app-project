@@ -1470,3 +1470,96 @@ body.theme-dark .lesson-sticky-inner {
 body.theme-dark .clue-cover-text, .clue-open-title, .clue-open-text{
     color: white;
 }
+.video-btn {
+    min-height: 58px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-family: "Gugi", sans-serif;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    border: 3px solid #93c5fd;
+    background: linear-gradient(180deg, #dbeafe 0%, #93c5fd 100%);
+    color: #1e3a8a;
+}
+
+.video-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.video-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 2000;
+}
+
+.video-popup-content {
+    position: relative;
+    width: min(820px, 95vw);
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+    border: 3px solid #ffffff;
+}
+
+.video-popup-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0 6px;
+}
+
+.video-popup-close:hover {
+    transform: scale(1.08);
+}
+
+.video-popup-frame-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #000;
+}
+
+.video-popup-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 950px) {
+    .video-btn {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 760px) {
+    .video-popup-content {
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .video-popup-close {
+        font-size: 28px;
+        top: 6px;
+        right: 8px;
+    }
+}
