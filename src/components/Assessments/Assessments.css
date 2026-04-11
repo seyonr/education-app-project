@@ -1282,6 +1282,8 @@
     transform: none;
 }
 
+
+
 /* accessibility theme support */
 body.theme-dark .assessment-subtitle,
 /* body.theme-dark .assessment-result-row, */
@@ -1306,8 +1308,8 @@ body.theme-contrast .pet-message {
   box-shadow: var(--card-shadow);
 }
 
-body.theme-dark .assessment-subtitle{
-  color: black;
+body.theme-dark .assesment-title .assessment-subtitle{
+  color: white;
 }
 
 /* =========================
