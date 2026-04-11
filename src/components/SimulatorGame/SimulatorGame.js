@@ -426,12 +426,25 @@ function getRewardStatus(reward) {
 
   return (
     <div className="saving-lesson-container">
-  <button
-    className="saving-help-button"
-    onClick={() => setShowHelp(true)}
-  >
-    ?
-  </button>
+  <div className="saving-corner-buttons">
+    <button
+      className="saving-help-button"
+      onClick={() => setShowHelp(true)}
+      aria-label="Help"
+      title="Help"
+    >
+      ?
+    </button>
+
+    <button
+      className="saving-shelf-float-button"
+      onClick={() => navigate("/prize-shelf")}
+      aria-label="Prize Shelf"
+      title="Prize Shelf"
+    >
+      🏆
+    </button>
+  </div>
 
   <div className="saving-layout">
         <aside className="saving-rewards-sidebar">
