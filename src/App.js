@@ -208,6 +208,7 @@ import AssessmentsPage from "./components/Assessments/AssessmentsPage";
 import AssessmentQuiz from "./components/Assessments/AssessmentQuiz";
 import AssessmentResults from "./components/Assessments/AssessmentResults";
 import Investments from "./components/Investments/Investments";
+import PrizeShelf from "./components/PrizeShelf/PrizeShelf";
 
 import { getGradeCookie } from "./cookieUtils";
 
@@ -294,6 +295,8 @@ function App() {
           <Route path="/pet-shop" element={<PetShopPage darkMode={darkMode} />} />
           <Route path="/investments" element={<Investments />} />
           <Route path="/simulator" element={<SimulatorGame />} />
+          <Route path="/simulation/:grade/:gameId" element={<SimulatorGame />} />
+          <Route path="/prize-shelf" element={<PrizeShelf />} />
         </Routes>
 
         <PetMascotWrapper />

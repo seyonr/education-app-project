@@ -89,6 +89,9 @@ function Navbar() {
           </li>
 
           <li>
+  <Link to="/simulator" className="up">Invest</Link>
+</li>
+          <li>
             <Link to="/pet-shop" className="up">Pet Shop</Link>
           </li>
 
