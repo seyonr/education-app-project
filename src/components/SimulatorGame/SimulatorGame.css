@@ -19,11 +19,60 @@
   min-height: calc(100vh - 68px);
   padding: 14px 16px 18px;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(255, 220, 90, 0.28), transparent 25%),
     radial-gradient(circle at top right, rgba(255, 179, 210, 0.22), transparent 23%),
     radial-gradient(circle at bottom left, rgba(155, 220, 255, 0.22), transparent 25%),
     linear-gradient(180deg, #f8fbff 0%, #eef7ff 50%, #fff8f0 100%);
+}
+
+.saving-layout,
+.saving-corner-buttons,
+.saving-win-overlay,
+.saving-popup-overlay,
+.saving-help-overlay {
+  position: relative;
+  z-index: 2;
+}
+
+.saving-floating-emoji {
+  position: absolute;
+  font-size: 56px;
+  opacity: 0.18;
+  pointer-events: none;
+  animation: savingFloatMove 4.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+.se1 { top: 7%; left: 7%; }
+.se2 { top: 10%; left: 28%; }
+.se3 { top: 8%; right: 18%; }
+.se4 { top: 30%; left: 4%; }
+.se5 { top: 28%; right: 8%; }
+.se6 { bottom: 24%; left: 10%; }
+.se7 { bottom: 13%; left: 32%; }
+.se8 { bottom: 12%; right: 16%; }
+.se9 { top: 54%; left: 18%; }
+.se10 { top: 58%; right: 22%; }
+
+@keyframes savingFloatMove {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(5deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
 }
 
 .saving-layout {

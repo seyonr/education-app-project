@@ -425,8 +425,19 @@ function getRewardStatus(reward) {
 }
 
   return (
-    <div className="saving-lesson-container">
-  <div className="saving-corner-buttons">
+  <div className="saving-lesson-container">
+    <span className="saving-floating-emoji se1">🪙</span>
+    <span className="saving-floating-emoji se2">⭐</span>
+    <span className="saving-floating-emoji se3">💸</span>
+    <span className="saving-floating-emoji se4">🎯</span>
+    <span className="saving-floating-emoji se5">🏆</span>
+    <span className="saving-floating-emoji se6">💰</span>
+    <span className="saving-floating-emoji se7">✨</span>
+    <span className="saving-floating-emoji se8">🛍️</span>
+    <span className="saving-floating-emoji se9">🪙</span>
+    <span className="saving-floating-emoji se10">⭐</span>
+
+    <div className="saving-corner-buttons">
     <button
       className="saving-help-button"
       onClick={() => setShowHelp(true)}

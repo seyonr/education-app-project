@@ -22,8 +22,19 @@ function PrizeShelf() {
   const bottomShelf = collectedRewards.slice(8, 12);
 
   return (
-    <div className="prize-shelf-page">
-      <div className="prize-shelf-shell">
+  <div className="prize-shelf-page">
+    <span className="prize-floating-emoji pe1">🪙</span>
+    <span className="prize-floating-emoji pe2">⭐</span>
+    <span className="prize-floating-emoji pe3">💸</span>
+    <span className="prize-floating-emoji pe4">🎯</span>
+    <span className="prize-floating-emoji pe5">🏆</span>
+    <span className="prize-floating-emoji pe6">💰</span>
+    <span className="prize-floating-emoji pe7">✨</span>
+    <span className="prize-floating-emoji pe8">🛍️</span>
+    <span className="prize-floating-emoji pe9">🪙</span>
+    <span className="prize-floating-emoji pe10">⭐</span>
+
+    <div className="prize-shelf-shell">
         <div className="prize-shelf-header">
           <h1>Prize Shelf</h1>
           <p>Your collected rewards live here.</p>
