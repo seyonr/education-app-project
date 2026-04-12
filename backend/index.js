@@ -1641,6 +1641,131 @@ function normalizeQuestionType(rawType) {
   return "scenario-choice";
 }
 
+function inferDragDropBuckets(question) {
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.question || ""}`.toLowerCase();
+
+  if (
+    containsAny(combined, [
+      "saving action",
+      "helps you save",
+      "promote saving",
+      "hinder",
+      "hurts saving",
+      "help you save",
+      "saving habits",
+      "smart money action"
+    ])
+  ) {
+    return {
+      left: {
+        id: "helps-saving",
+        title: "Helps Saving",
+        subtitle: "Good saving actions"
+      },
+      right: {
+        id: "hurts-saving",
+        title: "Hurts Saving",
+        subtitle: "Actions that make saving harder"
+      }
+    };
+  }
+
+  if (
+    containsAny(combined, [
+      "school supplies",
+      "for school",
+      "needed for school",
+      "classroom",
+      "bring to school"
+    ])
+  ) {
+    return {
+      left: {
+        id: "school-need",
+        title: "Needed for School",
+        subtitle: "Important school items"
+      },
+      right: {
+        id: "school-extra",
+        title: "Extra Items",
+        subtitle: "Fun but not needed"
+      }
+    };
+  }
+
+  return {
+    left: {
+      id: "need",
+      title: "Needs",
+      subtitle: "Must-have items"
+    },
+    right: {
+      id: "want",
+      title: "Wants",
+      subtitle: "Fun extras"
+    }
+  };
+}
+
+function normalizeDragDropBucketValue(rawBucket, bucketConfig, index = 0) {
+  const value = String(rawBucket || "").trim().toLowerCase();
+
+  const leftId = bucketConfig.left.id;
+  const rightId = bucketConfig.right.id;
+
+  const leftAliases = new Set([
+    leftId,
+    "need",
+    "needs",
+    "must-have",
+    "must have",
+    "help",
+    "helps",
+    "helps-saving",
+    "save",
+    "saving",
+    "good",
+    "smart"
+  ]);
+
+  const rightAliases = new Set([
+    rightId,
+    "want",
+    "wants",
+    "extra",
+    "fun",
+    "hurt",
+    "hurts",
+    "hurts-saving",
+    "spend",
+    "bad",
+    "not-saving"
+  ]);
+
+  if (leftAliases.has(value)) return leftId;
+  if (rightAliases.has(value)) return rightId;
+
+  return index % 2 === 0 ? leftId : rightId;
+}
+
+function getDragDropSceneInstruction(question) {
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.question || ""}`.toLowerCase();
+
+  if (
+    containsAny(combined, [
+      "saving action",
+      "helps you save",
+      "promote saving",
+      "hinder",
+      "saving habits"
+    ])
+  ) {
+    return "Show a child thinking about saving money, shopping choices, and money habits in a realistic store or everyday spending setting.";
+  }
+
+  return "Show a clear topic scene that matches the sorting activity so the child understands the category situation.";
+}
+
 function containsAny(text, words) {
   const value = String(text || "").toLowerCase();
   return words.some((word) => value.includes(word));
@@ -1742,10 +1867,31 @@ function detectScenarioLocation(question) {
   if (containsAny(combined, ["art table", "art class", "class art"])) return "classroom art table";
   if (containsAny(combined, ["party table", "class party"])) return "classroom party table";
   if (containsAny(combined, ["movie night"])) return "home movie night table";
-  if (containsAny(combined, ["school supplies", "markers", "pencil", "notebook", "backpack", "folder", "glue", "crayons"])) {
+  if (
+    containsAny(combined, [
+      "school supplies",
+      "markers",
+      "pencil",
+      "notebook",
+      "backpack",
+      "folder",
+      "glue",
+      "crayons"
+    ])
+  ) {
     return "school supply store";
   }
-  if (containsAny(combined, ["cookie", "chips", "ice cream", "juice", "sandwich", "fruit", "snack"])) {
+  if (
+    containsAny(combined, [
+      "cookie",
+      "chips",
+      "ice cream",
+      "juice",
+      "sandwich",
+      "fruit",
+      "snack"
+    ])
+  ) {
     return "snack shop";
   }
 
@@ -1846,6 +1992,19 @@ function dedupeObjects(objects) {
   return result;
 }
 
+function shuffleArray(array) {
+  if (!Array.isArray(array)) return [];
+
+  const shuffled = [...array];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+}
+
 function buildObjectListForPrompt(question) {
   const objects = dedupeObjects(getQuestionObjects(question));
 
@@ -1915,6 +2074,7 @@ function buildLocationInstruction(question) {
   return map[location] || map.store;
 }
 
+// =--------------==========----------------------------------------------------------------------
 function buildUniversalScenePrompt(question) {
   const scenarioTitle = cleanSceneText(question?.scenarioTitle || "");
   const scenarioText = cleanSceneText(question?.scenarioText || "");
@@ -1933,8 +2093,7 @@ function buildUniversalScenePrompt(question) {
       "Show the full situation the clues are about. The image should support the reasoning context, not just a single item.",
     "budget-builder":
       "Show the full shopping or planning scene with the exact listed items naturally present in the image.",
-    "drag-drop":
-      "Show a clear topic scene that matches the sorting activity so the child understands the category situation."
+    "drag-drop": getDragDropSceneInstruction(question)
   };
 
   const typeInstruction =
@@ -2061,7 +2220,9 @@ function buildExactImagePromptFromQuestion(question) {
 
 function cleanScenarioChoiceOptionText(text, question, isBest) {
   let value = String(text || "").trim();
-  if (!value) return isBest ? "Save your money for your goal" : "Spend your money now";
+  if (!value) {
+    return isBest ? "Save your money for your goal" : "Spend your money now";
+  }
 
   value = value.replace(/\s+/g, " ").trim();
   const lower = value.toLowerCase();
@@ -2070,7 +2231,9 @@ function cleanScenarioChoiceOptionText(text, question, isBest) {
   const goalItem = detectGoalItem(question);
 
   if (lower === "save money" || lower === "save it" || lower === "keep saving") {
-    return goalItem ? `Save your money for the ${goalItem}` : "Save your money for your goal";
+    return goalItem
+      ? `Save your money for the ${goalItem}`
+      : "Save your money for your goal";
   }
 
   if (
@@ -2231,16 +2394,56 @@ function pickScenarioChoiceEmoji(text, isBest, index) {
 
   if (isBest) {
     if (containsAny(value, ["save", "money left", "good price"])) return "💰";
-    if (containsAny(value, ["school", "notebook", "pencil", "markers", "backpack", "book"])) return "📚";
+    if (
+      containsAny(value, [
+        "school",
+        "notebook",
+        "pencil",
+        "markers",
+        "backpack",
+        "book"
+      ])
+    ) {
+      return "📚";
+    }
     if (containsAny(value, ["food", "lunch", "meal"])) return "🍽️";
     if (containsAny(value, ["bike"])) return "🚲";
     return "✅";
   }
 
-  if (containsAny(value, ["toy", "car", "doll", "stuffed bear", "bouncy ball", "puzzle", "yo-yo"])) return "🧸";
+  if (
+    containsAny(value, [
+      "toy",
+      "car",
+      "doll",
+      "stuffed bear",
+      "bouncy ball",
+      "puzzle",
+      "yo-yo"
+    ])
+  ) {
+    return "🧸";
+  }
   if (value.includes("game")) return "🎮";
   if (containsAny(value, ["bike"])) return "🚲";
-  if (containsAny(value, ["cookie", "cake", "chips", "candy", "snack", "ice cream", "muffin", "granola bar", "sandwich", "fruit cup", "popcorn", "yogurt"])) return "🍪";
+  if (
+    containsAny(value, [
+      "cookie",
+      "cake",
+      "chips",
+      "candy",
+      "snack",
+      "ice cream",
+      "muffin",
+      "granola bar",
+      "sandwich",
+      "fruit cup",
+      "popcorn",
+      "yogurt"
+    ])
+  ) {
+    return "🍪";
+  }
   if (containsAny(value, ["juice", "juice box"])) return "🧃";
   if (value.includes("book")) return "📚";
   if (containsAny(value, ["wait", "later"])) return "⏳";
@@ -2288,7 +2491,8 @@ function buildTapRevealOptions(question) {
   const walletAmount = getWalletAmount(question);
   const goalPrice = getGoalPrice(question);
   const goalItem = detectGoalItem(question);
-  const amountText = walletAmount != null ? normalizeCurrencyText(walletAmount) : "your money";
+  const amountText =
+    walletAmount != null ? normalizeCurrencyText(walletAmount) : "your money";
 
   const bestText = goalItem
     ? `Save ${amountText} for the ${goalItem}`
@@ -2356,17 +2560,15 @@ function getPromptSchema(questionType, index = 0) {
   "generalHint": "...",
   "successMessage": "...",
   "questionImagePrompt": "...",
+  "bucketConfig": {
+    "left": { "id": "need", "title": "Needs", "subtitle": "Must-have items" },
+    "right": { "id": "want", "title": "Wants", "subtitle": "Fun extras" }
+  },
   "items": [
     { "id": "q${q}i1", "label": "Water Bottle", "emoji": "💧", "bucket": "need" },
     { "id": "q${q}i2", "label": "Lunch", "emoji": "🥪", "bucket": "need" },
-    { "id": "q${q}i3", "label": "Notebook", "emoji": "📓", "bucket": "need" },
-    { "id": "q${q}i4", "label": "Winter Coat", "emoji": "🧥", "bucket": "need" },
-    { "id": "q${q}i5", "label": "Pencil", "emoji": "✏️", "bucket": "need" },
-    { "id": "q${q}i6", "label": "Candy", "emoji": "🍬", "bucket": "want" },
-    { "id": "q${q}i7", "label": "Toy Car", "emoji": "🚗", "bucket": "want" },
-    { "id": "q${q}i8", "label": "Video Game", "emoji": "🎮", "bucket": "want" },
-    { "id": "q${q}i9", "label": "Ice Cream", "emoji": "🍦", "bucket": "want" },
-    { "id": "q${q}i10", "label": "Sticker Pack", "emoji": "🌟", "bucket": "want" }
+    { "id": "q${q}i3", "label": "Candy", "emoji": "🍬", "bucket": "want" },
+    { "id": "q${q}i4", "label": "Toy Car", "emoji": "🚗", "bucket": "want" }
   ]
 }`;
   }
@@ -2491,9 +2693,19 @@ Type-specific rules for budget-builder:
 
   return `
 Type-specific rules for drag-drop:
-- Include 8 to 10 items
+- Include 6 to 10 items
 - Keep items key order exactly: id, label, emoji, bucket
-- Every item must clearly belong to need or want
+- Include bucketConfig with this exact key order:
+  left -> id, title, subtitle
+  right -> id, title, subtitle
+- Drag-drop questions do NOT always have to be needs vs wants
+- The bucket meaning must match the lesson concept
+- Example valid bucket pairs:
+  - Needs / Wants
+  - Helps Saving / Hurts Saving
+  - Good Choice / Poor Choice
+  - School Need / Extra Item
+- Every item must clearly belong to one of the two buckets
 - Avoid ambiguous items
 - Use correct emojis for each label
 - Make the image prompt match the full sorting topic or scene
@@ -2519,7 +2731,8 @@ ${buildTypeSpecificRules(questionType)}
 function buildFallbackScenarioOptions(question) {
   const goalItem = detectGoalItem(question);
   const walletAmount = getWalletAmount(question);
-  const amountText = walletAmount != null ? normalizeCurrencyText(walletAmount) : "your money";
+  const amountText =
+    walletAmount != null ? normalizeCurrencyText(walletAmount) : "your money";
 
   return [
     {
@@ -2609,7 +2822,11 @@ function ensureScenarioChoice(question, index) {
   }
 
   uniqueOptions.forEach((option, i) => {
-    option.text = cleanScenarioChoiceOptionText(option.text, question, option.isBest);
+    option.text = cleanScenarioChoiceOptionText(
+      option.text,
+      question,
+      option.isBest
+    );
     option.subText = "";
     option.emoji = pickScenarioChoiceEmoji(option.text, option.isBest, i);
 
@@ -2618,7 +2835,11 @@ function ensureScenarioChoice(question, index) {
     }
 
     if (!option.effect) {
-      option.effect = buildScenarioChoiceEffect(option.text, question, option.isBest);
+      option.effect = buildScenarioChoiceEffect(
+        option.text,
+        question,
+        option.isBest
+      );
     }
   });
 
@@ -2638,7 +2859,8 @@ function ensureScenarioChoice(question, index) {
     options: uniqueOptions.slice(0, 3)
   };
 
-  finalQuestion.questionImagePrompt = buildExactImagePromptFromQuestion(finalQuestion);
+  finalQuestion.questionImagePrompt =
+    buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
 }
 
@@ -2721,7 +2943,8 @@ function ensureTapReveal(question, index) {
     options: normalizedOptions
   };
 
-  finalQuestion.questionImagePrompt = buildExactImagePromptFromQuestion(finalQuestion);
+  finalQuestion.questionImagePrompt =
+    buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
 }
 
@@ -2778,18 +3001,37 @@ function ensureBudgetBuilder(question, index) {
     correctItemIds
   };
 
-  finalQuestion.questionImagePrompt = buildExactImagePromptFromQuestion(finalQuestion);
+  finalQuestion.questionImagePrompt =
+    buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
 }
 
 function ensureDragDrop(question, index) {
+  const inferredBuckets = inferDragDropBuckets(question);
+
+  const bucketConfig = {
+    left: {
+      id: question?.bucketConfig?.left?.id || inferredBuckets.left.id,
+      title: question?.bucketConfig?.left?.title || inferredBuckets.left.title,
+      subtitle:
+        question?.bucketConfig?.left?.subtitle || inferredBuckets.left.subtitle
+    },
+    right: {
+      id: question?.bucketConfig?.right?.id || inferredBuckets.right.id,
+      title:
+        question?.bucketConfig?.right?.title || inferredBuckets.right.title,
+      subtitle:
+        question?.bucketConfig?.right?.subtitle || inferredBuckets.right.subtitle
+    }
+  };
+
   const items = Array.isArray(question.items) ? question.items.slice(0, 10) : [];
 
   const normalizedItems = items.map((item, itemIndex) => ({
     id: item.id || `q${index + 1}i${itemIndex + 1}`,
     label: item.label || item.name || `Item ${itemIndex + 1}`,
     emoji: item.emoji || pickItemEmoji(item.label || item.name),
-    bucket: item.bucket === "need" ? "need" : "want"
+    bucket: normalizeDragDropBucketValue(item.bucket, bucketConfig, itemIndex)
   }));
 
   const finalQuestion = {
@@ -2799,15 +3041,15 @@ function ensureDragDrop(question, index) {
     heroEmoji: question.heroEmoji || "💡",
     heroCaption: question.heroCaption || "",
     question: question.question || "",
-    generalHint:
-      question.generalHint ||
-      "Think about which items are needs and which are wants.",
+    generalHint: question.generalHint || "Sort each card into the correct group.",
     successMessage:
       question.successMessage || "Amazing! You sorted every item correctly.",
-    items: normalizedItems
+    bucketConfig,
+    items: shuffleArray(normalizedItems)
   };
 
-  finalQuestion.questionImagePrompt = buildExactImagePromptFromQuestion(finalQuestion);
+  finalQuestion.questionImagePrompt =
+    buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
 }
 

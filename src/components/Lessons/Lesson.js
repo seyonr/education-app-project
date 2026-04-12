@@ -1568,7 +1568,6 @@
 // }
 
 // export default Lesson;
-
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import lessonsData from "../../data/lessons";
@@ -1621,6 +1620,7 @@ function buildLessonGenerationPayload(lesson, grade, unit, lessonId) {
       tag: item.tag || "",
     })),
     correctItemIds: question.correctItemIds || [],
+    bucketConfig: question.bucketConfig || null,
   }));
 
   return {
@@ -1702,8 +1702,8 @@ function Lesson() {
   const [revealedCards, setRevealedCards] = useState([]);
 
   const [availableItems, setAvailableItems] = useState([]);
-  const [needBucketItems, setNeedBucketItems] = useState([]);
-  const [wantBucketItems, setWantBucketItems] = useState([]);
+  const [leftBucketItems, setLeftBucketItems] = useState([]);
+  const [rightBucketItems, setRightBucketItems] = useState([]);
   const [draggedItemId, setDraggedItemId] = useState(null);
 
   const [showHintPopup, setShowHintPopup] = useState(false);
@@ -1831,12 +1831,12 @@ function Lesson() {
 
     if (qType === "drag-drop") {
       setAvailableItems(q.items || []);
-      setNeedBucketItems([]);
-      setWantBucketItems([]);
+      setLeftBucketItems([]);
+      setRightBucketItems([]);
     } else {
       setAvailableItems([]);
-      setNeedBucketItems([]);
-      setWantBucketItems([]);
+      setLeftBucketItems([]);
+      setRightBucketItems([]);
     }
   }, [lesson, currentQuestion, activeQuestions]);
 
@@ -1871,6 +1871,22 @@ function Lesson() {
   }
 
   const questionType = q.type || lesson.type || "scenario-choice";
+
+  const bucketConfig = q.bucketConfig || {
+    left: {
+      id: "need",
+      title: "Needs",
+      subtitle: "Must-have items",
+    },
+    right: {
+      id: "want",
+      title: "Wants",
+      subtitle: "Fun extras",
+    },
+  };
+
+  const LEFT_BUCKET = bucketConfig.left.id;
+  const RIGHT_BUCKET = bucketConfig.right.id;
 
   const getDefaultInstruction = () => {
     if (questionType === "scenario-choice") {
@@ -2069,22 +2085,20 @@ function Lesson() {
     event.preventDefault();
   };
 
-  const bucketLabels = q.bucketLabels || {
-    need: "Needs",
-    want: "Wants"
-  };
-
   const classifyItem = (item, bucket) => {
     if (!item) return;
 
-    const actualBucket = item.bucket || item.type;
+    const actualBucket = item.bucket;
     const label = item.label || item.name || "This item";
     const isCorrect = actualBucket === bucket;
 
     if (!isCorrect) {
-      setFeedback(
-        `${label} goes in ${actualBucket === "need" ? bucketLabels.need : bucketLabels.want}. Try again!`
-      );
+      const correctBucket =
+        actualBucket === LEFT_BUCKET
+          ? bucketConfig.left.title
+          : bucketConfig.right.title;
+
+      setFeedback(`${label} belongs in ${correctBucket}. Try again!`);
       setFeedbackType("hint");
       setIsStepComplete(false);
       return;
@@ -2092,10 +2106,10 @@ function Lesson() {
 
     setAvailableItems((prev) => prev.filter((entry) => entry.id !== item.id));
 
-    if (bucket === "need") {
-      setNeedBucketItems((prev) => [...prev, item]);
+    if (bucket === LEFT_BUCKET) {
+      setLeftBucketItems((prev) => [...prev, item]);
     } else {
-      setWantBucketItems((prev) => [...prev, item]);
+      setRightBucketItems((prev) => [...prev, item]);
     }
 
     const remainingCount = availableItems.length - 1;
@@ -2145,7 +2159,7 @@ function Lesson() {
         if (imgObj?.questionImg) {
           visuals.push({
             src: imgObj.questionImg,
-            alt: `lesson visual ${index + 1}`
+            alt: `lesson visual ${index + 1}`,
           });
         }
       });
@@ -2156,7 +2170,7 @@ function Lesson() {
         if (option.img) {
           visuals.push({
             src: option.img,
-            alt: option.text || `option ${index + 1}`
+            alt: option.text || `option ${index + 1}`,
           });
         }
       });
@@ -2165,7 +2179,7 @@ function Lesson() {
     getContextImages().forEach((src, index) => {
       visuals.push({
         src,
-        alt: `context visual ${index + 1}`
+        alt: `context visual ${index + 1}`,
       });
     });
 
@@ -2465,13 +2479,13 @@ function Lesson() {
                       <div
                         className={`drop-zone need-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
                         onDragOver={handleDragOver}
-                        onDrop={() => handleDropToBucket("need")}
+                        onDrop={() => handleDropToBucket(LEFT_BUCKET)}
                       >
-                        <h4>{bucketLabels.need}</h4>
-                        <p className="drop-zone-mini">Must-have items</p>
+                        <h4>{bucketConfig.left.title}</h4>
+                        <p className="drop-zone-mini">{bucketConfig.left.subtitle}</p>
 
                         <div className="sorted-items">
-                          {needBucketItems.map((item) => (
+                          {leftBucketItems.map((item) => (
                             <div key={item.id} className="sorted-pill">
                               <span>{item.emoji || "✅"}</span>
                               <span>{item.label || item.name}</span>
@@ -2483,13 +2497,13 @@ function Lesson() {
                       <div
                         className={`drop-zone want-zone ${draggedItemId ? "drop-zone-ready" : ""}`}
                         onDragOver={handleDragOver}
-                        onDrop={() => handleDropToBucket("want")}
+                        onDrop={() => handleDropToBucket(RIGHT_BUCKET)}
                       >
-                        <h4>{bucketLabels.want}</h4>
-                        <p className="drop-zone-mini">Fun extras</p>
+                        <h4>{bucketConfig.right.title}</h4>
+                        <p className="drop-zone-mini">{bucketConfig.right.subtitle}</p>
 
                         <div className="sorted-items">
-                          {wantBucketItems.map((item) => (
+                          {rightBucketItems.map((item) => (
                             <div key={item.id} className="sorted-pill">
                               <span>{item.emoji || "✅"}</span>
                               <span>{item.label || item.name}</span>
