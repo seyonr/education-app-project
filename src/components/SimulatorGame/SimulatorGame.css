@@ -840,3 +840,54 @@
   font-size: 1.15rem;
 }
 }
+
+/* ================= DARK MODE ================= */
+body.theme-dark .simulator-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.theme-dark .simulator-card,
+body.theme-dark .game-box,
+body.theme-dark .sidebar,
+body.theme-dark .popup,
+body.theme-dark .help-modal {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #333;
+}
+
+body.theme-dark button {
+  background-color: #333;
+  color: #fff;
+}
+
+body.theme-dark button:hover {
+  background-color: #555;
+}
+
+/* ================= CONTRAST MODE ================= */
+body.theme-contrast .simulator-container {
+  background-color: #000000;
+  color: #ffff00;
+}
+
+body.theme-contrast .simulator-card,
+body.theme-contrast .game-box,
+body.theme-contrast .sidebar,
+body.theme-contrast .popup,
+body.theme-contrast .help-modal {
+  background-color: #000000;
+  color: #ffff00;
+  border: 2px solid #ffff00;
+}
+
+body.theme-contrast button {
+  background-color: #ffff00;
+  color: #000;
+  font-weight: bold;
+}
+
+body.theme-contrast button:hover {
+  background-color: #ffffff;
+}
