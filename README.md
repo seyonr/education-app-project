@@ -1,6 +1,8 @@
 
 
 Video Link : https://youtu.be/sXXPi3zZc-A
+
+Website: Link: https://edu-app-final-1.onrender.com/dashboard
 # PennyPals: Financial Learning Adventure
 
 An interactive educational web app that teaches kids money skills through playful lessons, quizzes, a simulator game, and pet-care rewards.
